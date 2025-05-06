@@ -1,13 +1,17 @@
 import React from 'react';
-import { SafeAreaView, View, Text } from 'react-native'; // Import necessary components
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from './Home';
+import ProfileScreen from './Profile';
+const Stack = createNativeStackNavigator();
 const App = () => {
   return (
-    <SafeAreaView 
-     style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: "row" }}>
-      <Text accessibilityRole='header'>React Native Fun!</Text>
-      <View><Text>Hi Hello</Text></View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Home' component={Home} options={{ title: 'Welcome' }} />
+        <Stack.Screen name='Profile' component={ProfileScreen} options={{ title: 'Profile' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
