@@ -34425,6 +34425,10 @@
           }
         }
       }
+    },
+    {
+      "moduleName": "@tamagui/lucide-icons",
+      "nameToInfo": {}
     }
   ],
   "nameToPaths": {},

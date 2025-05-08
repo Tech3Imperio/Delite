@@ -41,9 +41,12 @@ node_modules/
 npm-debug.log
 yarn-error.log
 .env
+.tamagui
+.bundle
 .vscode/
 backend/__pycache__
 backend/venv
+
 
 # fastlane
 #

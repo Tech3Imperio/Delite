@@ -23,7 +23,7 @@ export default defineConfig({
   plugins: [react(),
   tamaguiPlugin({
     config: 'src/tamagui.config.ts',
-    components: ['tamagui'],
+    components: ['tamagui', '@tamagui/lucide-icons'],
     optimize: true,
   }),
   ],
