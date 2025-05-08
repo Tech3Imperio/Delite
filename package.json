@@ -10,7 +10,8 @@
     "test": "jest",
     "web": "vite",
     "build:web": "vite build",
-    "preview:web": "vite preview"
+    "preview:web": "vite preview",
+    "backend": "bash -c 'cd backend && source venv/bin/activate && uvicorn index:app --reload'"
   },
   "dependencies": {
     "@react-navigation/native": "^7.1.8",
