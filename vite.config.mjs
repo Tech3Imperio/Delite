@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
 const extensions = [
   ".web.tsx",
   ".tsx",
@@ -16,7 +16,17 @@ const extensions = [
 ];
 
 export default defineConfig({
-  plugins: [react()],
+  // define: {
+  //   DEV: `${process.env.NODE_ENV === 'development' ? true : false}`,
+  //   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  // },
+  plugins: [react(),
+  tamaguiPlugin({
+    config: 'src/tamagui.config.ts',
+    components: ['tamagui'],
+    optimize: true,
+  }),
+  ],
   optimizeDeps: {
     esbuildOptions: {
       resolveExtensions: extensions,
@@ -28,6 +38,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  // loader: {
+  //   '.js': 'jsx',
+  // },
   server: {
     port: 3000,
   },
