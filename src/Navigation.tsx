@@ -5,6 +5,10 @@ import Dashboard from "./screens/admin/Dashboard";
 
 const RootStack = createNativeStackNavigator({
     initialRouteName: "Auth",
+    screenOptions: {
+        headerShown: false,
+        headerTitle: undefined
+    },
     screens: {
         Auth: {
             screen: Auth,
