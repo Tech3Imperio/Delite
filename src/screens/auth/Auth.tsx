@@ -1,28 +1,33 @@
 import React from 'react';
-import { Platform, Text, TextInput } from 'react-native'; // Import necessary components
+import { useColorScheme, Text } from 'react-native'; // Import necessary components
 import { useNavigation, StaticScreenProps } from '@react-navigation/native';
-import { Button, Input, View, YStack } from 'tamagui';
-import { Plus } from '@tamagui/lucide-icons';
-import { usePrimaryBackgroundColor } from '../../../states/primaryBackgroundColor';
+import { Button, Input, XStack, YStack } from 'tamagui';
+import { LogIn } from '@tamagui/lucide-icons';
+import { useThemeColors } from '../../../states/themeColors';
 type AuthParamProps = StaticScreenProps<{}>
 const Auth = ({ route }: AuthParamProps) => {
+
+    const theme = useColorScheme()
+    const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     const navigation = useNavigation()
-    const primaryBackgroundColor = usePrimaryBackgroundColor((state) => state.light)
-    const os = Platform.OS
+    const bg_color = themeColors.bg_color
     return (
-        <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: "flex-start", flexDirection: "row", backgroundColor: `${primaryBackgroundColor}` }}>
-            <YStack gap={8}>
-                <Input size="$2" placeholder='Enter Email' paddingBlock={0} onBlur={() => console.log("Blurred")} />
+        <XStack
+            style={{ flex: 1, justifyContent: 'center', alignItems: "center", flexDirection: "row", backgroundColor: `${bg_color}` }}>
+            <YStack gap={12}>
+                <Input size="$2" placeholder='User ID' paddingBlock={0} onBlur={() => console.log("Blurred")} placeholderTextColor={themeColors.ph_color} />
+                <Input size="$2" placeholder='Password' paddingBlock={0} onBlur={() => console.log("Blurred")} placeholderTextColor={themeColors.ph_color} />
                 <Button
-                    iconAfter={Plus}
+                    themeInverse
+                    size="$3"
+                    borderWidth={0.5}
+                    iconAfter={LogIn}
                     onPress={() =>
                         navigation.navigate({ name: "Dashboard", params: {} })
                     }
-                ><Text accessibilityRole='header'>{os}</Text></Button>
-                <TextInput placeholder='Hellow' />
+                >Sign In</Button>
             </YStack>
-        </View>
+        </XStack >
     );
 };
 
