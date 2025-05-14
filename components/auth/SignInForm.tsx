@@ -41,12 +41,10 @@ export const SignInFrom = () => {
 
             const result = await response.json();
             console.log(result)
-            if (result.status === true) {
+            if (result.success) {
                 console.log("Reached Here")
                 navigation.navigate({ name: "Dashboard", params: {} })
             }
-
-            // handle success (e.g., store token, navigate, etc.)
         } catch (error) {
             if (error instanceof Error) {
                 console.error("Sign-in error:", error.message);

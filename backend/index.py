@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from supabaseClient import supabase
 from fastapi.middleware.cors import CORSMiddleware
-from apis.auth.signIn import router as signInRouter
+from apis.auth.auth import router as authRouter
 app: FastAPI = FastAPI()
 
 app.add_middleware(
@@ -12,7 +12,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(signInRouter, prefix="/auth")
+app.include_router(authRouter, prefix="/auth")
 
 
 @app.get("/")
