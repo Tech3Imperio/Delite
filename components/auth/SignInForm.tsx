@@ -8,6 +8,7 @@ import { Text } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getApiBaseUrl } from "../../utils/auth/baseAPI";
 import { useNavigation } from "@react-navigation/native";
+import { storeToken } from "../../utils/auth/session";
 export const SignInFrom = () => {
     const navigation = useNavigation()
     const theme = useColorScheme()
@@ -33,15 +34,9 @@ export const SignInFrom = () => {
                 },
                 body: JSON.stringify(data),
             });
-
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.detail || "Something went wrong");
-            }
-
             const result = await response.json();
-            console.log(result)
             if (result.success) {
+                await storeToken(result.access_token)
                 console.log("Reached Here")
                 navigation.navigate({ name: "Dashboard", params: {} })
             }

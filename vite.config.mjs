@@ -16,10 +16,6 @@ const extensions = [
 ];
 
 export default defineConfig({
-  // define: {
-  //   DEV: `${process.env.NODE_ENV === 'development' ? true : false}`,
-  //   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-  // },
   plugins: [react(),
   tamaguiPlugin({
     config: 'src/tamagui.config.ts',
@@ -35,12 +31,9 @@ export default defineConfig({
   resolve: {
     alias: {
       'react-native': 'react-native-web',
-      '@': path.resolve(__dirname, 'src'),
+      "@env": path.resolve(__dirname, "utils/auth/env.web.ts")
     },
   },
-  // loader: {
-  //   '.js': 'jsx',
-  // },
   server: {
     port: 3000,
   },

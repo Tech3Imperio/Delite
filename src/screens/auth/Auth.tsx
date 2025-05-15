@@ -1,6 +1,6 @@
 import React from 'react';
 import { useColorScheme, Text } from 'react-native'; // Import necessary components
-import { useNavigation, StaticScreenProps } from '@react-navigation/native';
+import { StaticScreenProps } from '@react-navigation/native';
 import { XStack } from 'tamagui';
 import { useThemeColors } from '../../../states/themeColors';
 import { SignInFrom } from '../../../components/auth/SignInForm';

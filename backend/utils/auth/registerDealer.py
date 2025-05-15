@@ -2,7 +2,6 @@
 from supabaseClient import supabase
 from fastapi import HTTPException
 from dataTypes.auth.authTypes import SignUpForm
-from fastapi.responses import JSONResponse
 from utils.auth.hash import gen_password
 from utils.auth.hash import hash_password
 

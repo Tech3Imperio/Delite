@@ -19,5 +19,13 @@ module.exports = {
         disableExtraction: process.env.NODE_ENV === 'development',
       }
     ],
+    ['module:react-native-dotenv', {
+      moduleName: '@env',
+      path: '.env',
+      blacklist: null,
+      whitelist: null,
+      safe: true,
+      allowUndefined: false,
+    }],
   ],
 };
