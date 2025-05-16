@@ -31,10 +31,9 @@ declare global {
 }
 
 export const Navigation = () => {
-    const origin = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
 
     const linking: LinkingOptions<ReactNavigation.RootParamList> = {
-        prefixes: [origin],
+        prefixes: ["delite://"],
         // config: {
         //     screens: {
         //         Auth: '',
