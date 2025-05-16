@@ -1,8 +1,7 @@
-import { createStaticNavigation, StaticParamList } from "@react-navigation/native";
+import { createStaticNavigation, LinkingOptions, StaticParamList } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Auth from "./screens/auth/Auth";
 import Dashboard from "./screens/admin/Dashboard";
-
 const RootStack = createNativeStackNavigator({
     initialRouteName: "Auth",
     screenOptions: {
@@ -11,12 +10,16 @@ const RootStack = createNativeStackNavigator({
     },
     screens: {
         Auth: {
+            linking: "/",
             screen: Auth,
             options: {
                 title: 'Welcome',
             }
         },
-        Dashboard: Dashboard,
+        Dashboard: {
+            linking: "/dashboard",
+            screen: Dashboard
+        },
     },
 });
 
@@ -27,4 +30,21 @@ declare global {
     }
 }
 
-export const Navigation = createStaticNavigation(RootStack);
+export const Navigation = () => {
+    const origin = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
+
+    const linking: LinkingOptions<ReactNavigation.RootParamList> = {
+        prefixes: [origin],
+        // config: {
+        //     screens: {
+        //         Auth: '',
+        //         Dashboard: 'dashboard',
+        //     },
+        // }, config is not necessary for linking to work if linking is provided in screens in RootStack above
+        enabled: true
+    };
+
+    const StaticNavigation = createStaticNavigation(RootStack);
+
+    return <StaticNavigation linking={linking} />;
+};
