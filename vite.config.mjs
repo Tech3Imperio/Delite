@@ -37,4 +37,9 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  preview: {
+    host: '0.0.0.0',
+    port: parseInt(process.env.PORT || '4173'),
+    allowedHosts: ['delite-onc2.onrender.com'],
+  },
 });
