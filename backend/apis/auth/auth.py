@@ -1,6 +1,7 @@
 
+from utils.auth.session import decode_access_token
 from fastapi import APIRouter
-from dataTypes.auth.authTypes import SignInForm, SignUpForm
+from dataTypes.auth.authTypes import SignInForm, SignUpForm, Token
 from utils.auth.isAdmin import isAdmin
 from utils.auth.signInAdmin import signInAdmin
 from utils.auth.signInDealer import signInDealer
@@ -22,3 +23,10 @@ async def signin(form_data: SignInForm):
 async def signup(form_data: SignUpForm):
     status = registerDealer(form_data)
     return status
+
+
+@router.post('/verify')
+async def verify(token: Token):
+    print("token is", token)
+    userDetails = decode_access_token(token.token)
+    return userDetails

@@ -26,3 +26,7 @@ class SignUpForm(BaseModel):
     address: str
     pin_code: int
     dealer_type: DealerType
+
+
+class Token(BaseModel):
+    token: str

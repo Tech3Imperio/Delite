@@ -7,3 +7,16 @@ export const SignInFromSchema = z.object({
 })
 
 export type SignInFormType = z.infer<typeof SignInFromSchema>;
+
+export enum Role {
+    ADMIN = 'admin',
+    DEALER = 'dealer',
+    GUEST = 'guest'
+}
+
+export type AuthContextType = {
+    role: Role;
+    loading: boolean;
+    signIn: (role: Role) => void
+    signOut: () => void
+}

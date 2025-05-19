@@ -31,7 +31,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'react-native': 'react-native-web',
-      "@env": path.resolve(__dirname, "utils/auth/env.web.ts")
+      "@env": path.resolve(__dirname, "src/utils/auth/env.web.ts")
     },
   },
   server: {

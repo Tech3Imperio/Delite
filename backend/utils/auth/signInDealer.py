@@ -15,7 +15,7 @@ def signInDealer(data: SignInForm):
             if verify_password(data.password, response.data["password"]):
                 access_token = create_access_token(
                     {"userID": data.userID, "role": "dealer"})
-                return JSONResponse(content={"success": True, "access_token": access_token}, status_code=200)
+                return JSONResponse(content={"success": True, "access_token": access_token, 'role': 'dealer'}, status_code=200)
             else:
                 raise HTTPException(
                     status_code=401,

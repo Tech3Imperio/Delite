@@ -14,7 +14,7 @@ def signInAdmin(data: SignInForm):
         if response.user:
             access_token = create_access_token(
                 {"userID": data.userID, "role": "admin"})
-            return JSONResponse(content={"success": True, "access_token": access_token}, status_code=200)
+            return JSONResponse(content={"success": True, "access_token": access_token, "role": 'admin'}, status_code=200)
     except Exception as e:
         print("Login error:", e)
         raise HTTPException(

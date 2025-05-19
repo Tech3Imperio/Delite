@@ -1,11 +1,12 @@
 // import "react-native-get-random-values"
 import React from 'react';
-import { Navigation } from './Navigation';
+import { Navigation } from './navigation/Navigation';
 import { TamaguiProvider } from 'tamagui'
 import { config } from './tamagui.config';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useThemeColors } from '../states/themeColors';
+import { useThemeColors } from './states/themeColors';
 import { useColorScheme } from 'react-native';
+import AuthProvider from './navigation/AuthContext';
 const App = () => {
   const theme = useColorScheme()
   const themeName = theme === 'dark' ? 'dark' : 'light'
@@ -16,7 +17,9 @@ const App = () => {
       <SafeAreaView
         style={{ flex: 1, backgroundColor: `${bg_color}` }}>
         <TamaguiProvider config={config} defaultTheme={themeName}>
-          <Navigation />
+          <AuthProvider>
+            <Navigation />
+          </AuthProvider>
         </TamaguiProvider>
       </SafeAreaView>
     </SafeAreaProvider >

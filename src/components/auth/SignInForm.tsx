@@ -1,16 +1,17 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Button, Input, YStack } from "tamagui";
-import { SignInFormType, SignInFromSchema } from "../../dataTypes/auth/SignInFormType";
 import { useThemeColors } from "../../states/themeColors";
 import { useColorScheme } from "react-native";
 import { LogIn } from "@tamagui/lucide-icons";
 import { Text } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getApiBaseUrl } from "../../utils/auth/baseAPI";
-import { useNavigation } from "@react-navigation/native";
 import { storeToken } from "../../utils/auth/session";
+import { SignInFormType, SignInFromSchema } from "../../dataTypes/auth/AuthTypes";
+import { useContext } from "react";
+import { AuthContext } from "../../navigation/AuthContext";
 export const SignInFrom = () => {
-    const navigation = useNavigation()
+    const { signIn } = useContext(AuthContext)
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     const {
@@ -37,8 +38,7 @@ export const SignInFrom = () => {
             const result = await response.json();
             if (result.success) {
                 await storeToken(result.access_token)
-                console.log("Reached Here")
-                navigation.navigate({ name: "Dashboard", params: {} })
+                signIn(result.role)
             }
         } catch (error) {
             if (error instanceof Error) {
