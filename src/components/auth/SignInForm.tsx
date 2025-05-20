@@ -1,13 +1,13 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Button, Input, YStack } from "tamagui";
-import { useThemeColors } from "../../states/themeColors";
+import { useThemeColors } from "../../store/themeColors";
 import { useColorScheme } from "react-native";
 import { LogIn } from "@tamagui/lucide-icons";
 import { Text } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getApiBaseUrl } from "../../utils/auth/baseAPI";
 import { storeToken } from "../../utils/auth/session";
-import { SignInFormType, SignInFromSchema } from "../../dataTypes/auth/AuthTypes";
+import { SignInFormType, SignInFromSchema } from "../../types/auth/AuthTypes";
 import { useContext } from "react";
 import { AuthContext } from "../../navigation/AuthContext";
 export const SignInFrom = () => {

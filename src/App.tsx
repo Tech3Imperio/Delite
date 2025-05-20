@@ -4,7 +4,7 @@ import { Navigation } from './navigation/Navigation';
 import { TamaguiProvider } from 'tamagui'
 import { config } from './tamagui.config';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useThemeColors } from './states/themeColors';
+import { useThemeColors } from './store/themeColors';
 import { useColorScheme } from 'react-native';
 import AuthProvider from './navigation/AuthContext';
 const App = () => {
