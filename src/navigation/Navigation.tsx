@@ -3,13 +3,9 @@ import { AdminNavigation } from "./AdminStack";
 import { DealerNavigation } from "./DealerStack";
 import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
-import { Text } from "react-native";
 export const Navigation = () => {
-    const { role, loading
+    const { role,
     } = useContext(AuthContext)
-    if (loading) {
-        return <Text>Loading</Text>
-    }
     switch (role) {
         case 'admin':
             return <AdminNavigation />;

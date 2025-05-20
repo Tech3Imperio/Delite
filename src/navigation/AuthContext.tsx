@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { AuthContextType, Role } from '../types/auth/AuthTypes';
 import { getToken } from '../utils/auth/session';
 import { getApiBaseUrl } from '../utils/auth/baseAPI';
+import BootSplash from "react-native-bootsplash";
 
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 
@@ -47,6 +48,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         } catch (error) {
         } finally {
             setLoading(false);
+            await BootSplash.hide({ fade: true });
         }
     }
     const value: AuthContextType = {
