@@ -1,11 +1,9 @@
 import React from 'react';
 import { useColorScheme } from 'react-native'; // Import necessary components
-import { StaticScreenProps } from '@react-navigation/native';
 import { XStack } from 'tamagui';
 import { useThemeColors } from '../../store/themeColors';
 import { SignInFrom } from '../../components/auth/SignInForm';
-type AuthParamProps = StaticScreenProps<{}>
-const Auth = ({ route }: AuthParamProps) => {
+const Auth = () => {
 
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
