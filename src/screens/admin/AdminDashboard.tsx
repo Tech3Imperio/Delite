@@ -3,7 +3,7 @@ import { Text, Button, } from 'react-native'; // Import necessary components
 import { useNavigation, StaticScreenProps, StackActions } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { View } from 'tamagui';
-import { AuthContext } from '../../navigation/AuthContext';
+import { AuthContext } from '../../navigation/auth/AuthContext';
 import { removeToken } from '../../utils/auth/session';
 type AdminDashboardParamProp = StaticScreenProps<{}>
 const AdminDashboard = ({ route }: AdminDashboardParamProp) => {

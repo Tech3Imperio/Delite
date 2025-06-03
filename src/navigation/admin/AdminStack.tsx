@@ -1,6 +1,6 @@
 import { createStaticNavigation, LinkingOptions, StaticParamList } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AdminDashboard from "../screens/admin/AdminDashboard";
+import AdminDashboard from "../../screens/admin/AdminDashboard";
 const AdminStack = createNativeStackNavigator({
     initialRouteName: "AdminDashboard",
     screenOptions: {

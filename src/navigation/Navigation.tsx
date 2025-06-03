@@ -1,8 +1,8 @@
-import { AuthNavigation } from "./AuthStack";
-import { AdminNavigation } from "./AdminStack";
-import { DealerNavigation } from "./DealerStack";
+import { AuthNavigation } from "./auth/AuthStack";
+import { AdminNavigation } from "./admin/AdminStack";
+import { DealerStackNavigation } from "./dealer/DealerStackNavigation";
 import { useContext } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./auth/AuthContext";
 export const Navigation = () => {
     const { role,
     } = useContext(AuthContext)
@@ -10,7 +10,7 @@ export const Navigation = () => {
         case 'admin':
             return <AdminNavigation />;
         case 'dealer':
-            return <DealerNavigation />;
+            return <DealerStackNavigation />;
         case 'guest':
             return <AuthNavigation />;
     }

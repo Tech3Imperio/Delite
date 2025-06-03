@@ -1,6 +1,6 @@
 import { createStaticNavigation, LinkingOptions, StaticParamList } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Auth from "../screens/auth/Auth";
+import Auth from "../../screens/auth/Auth";
 const AuthStack = createNativeStackNavigator({
     initialRouteName: "Auth",
     screenOptions: {

@@ -6,7 +6,7 @@ import { config } from './tamagui.config';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useThemeColors } from './store/themeColors';
 import { useColorScheme } from 'react-native';
-import AuthProvider from './navigation/AuthContext';
+import AuthProvider from './navigation/auth/AuthContext';
 const App = () => {
   const theme = useColorScheme()
   const themeName = theme === 'dark' ? 'dark' : 'light'
@@ -23,7 +23,6 @@ const App = () => {
         </TamaguiProvider>
       </SafeAreaView>
     </SafeAreaProvider >
-
   );
 };
 

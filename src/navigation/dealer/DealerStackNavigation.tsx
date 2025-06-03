@@ -1,28 +1,27 @@
 import { createStaticNavigation, LinkingOptions, StaticParamList } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Dashboard from "../screens/dealer/DealerDashboard";
+import { DealerTabs } from "./DealerTabNavigation";
 const DealerStack = createNativeStackNavigator({
     initialRouteName: "DealerDashboard",
     screenOptions: {
         headerShown: false,
-        headerTitle: undefined
+        headerTitle: "Delite"
     },
     screens: {
         DealerDashboard: {
-            linking: "/dashboard",
-            screen: Dashboard,
+            screen: DealerTabs,
         },
     },
 });
 
-type DealerStackParamsList = StaticParamList<typeof DealerStack>;
+type DealerParamsListType = StaticParamList<typeof DealerStack>;
 declare global {
     namespace ReactNavigation {
-        interface DealerParamsList extends DealerStackParamsList { }
+        interface DealerParamsList extends DealerParamsListType { }
     }
 }
 
-export const DealerNavigation = () => {
+export const DealerStackNavigation = () => {
 
     const linking: LinkingOptions<ReactNavigation.DealerParamsList> = {
         prefixes: ["delite://"],

@@ -9,7 +9,7 @@ import { getApiBaseUrl } from "../../utils/auth/baseAPI";
 import { storeToken } from "../../utils/auth/session";
 import { SignInFormType, SignInFromSchema } from "../../types/auth/AuthTypes";
 import { useContext } from "react";
-import { AuthContext } from "../../navigation/AuthContext";
+import { AuthContext } from "../../navigation/auth/AuthContext";
 export const SignInFrom = () => {
     const { signIn } = useContext(AuthContext)
     const theme = useColorScheme()
