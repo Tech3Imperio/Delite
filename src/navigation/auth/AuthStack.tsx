@@ -1,4 +1,4 @@
-import { createStaticNavigation, LinkingOptions, StaticParamList } from "@react-navigation/native";
+import { createStaticNavigation, LinkingOptions, StaticParamList, Theme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Auth from "../../screens/auth/Auth";
 const AuthStack = createNativeStackNavigator({
@@ -22,7 +22,7 @@ declare global {
     }
 }
 
-export const AuthNavigation = () => {
+export const AuthNavigation = ({ theme }: { theme: Theme }) => {
 
     const linking: LinkingOptions<ReactNavigation.AuthParamsList> = {
         prefixes: ["delite://"],
@@ -30,5 +30,5 @@ export const AuthNavigation = () => {
     };
 
     const StaticAuthNavigation = createStaticNavigation(AuthStack);
-    return <StaticAuthNavigation linking={linking} />
+    return <StaticAuthNavigation linking={linking} theme={theme} />
 };

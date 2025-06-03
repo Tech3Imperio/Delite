@@ -1,4 +1,4 @@
-import { createStaticNavigation, LinkingOptions, StaticParamList } from "@react-navigation/native";
+import { createStaticNavigation, LinkingOptions, StaticParamList, Theme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AdminDashboard from "../../screens/admin/AdminDashboard";
 const AdminStack = createNativeStackNavigator({
@@ -22,7 +22,7 @@ declare global {
     }
 }
 
-export const AdminNavigation = () => {
+export const AdminNavigation = ({ theme }: { theme: Theme }) => {
 
     const linking: LinkingOptions<ReactNavigation.AdminParamsList> = {
         prefixes: ["delite://"],
@@ -30,5 +30,5 @@ export const AdminNavigation = () => {
     };
 
     const StaticAdminNavigation = createStaticNavigation(AdminStack);
-    return <StaticAdminNavigation linking={linking} />
+    return <StaticAdminNavigation linking={linking} theme={theme} />
 };

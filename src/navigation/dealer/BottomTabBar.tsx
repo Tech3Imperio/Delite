@@ -1,18 +1,16 @@
-import { View } from 'react-native';
+import { StyleSheet, useColorScheme, View } from 'react-native';
 import { useLinkBuilder, useTheme } from '@react-navigation/native';
-import { Text, PlatformPressable } from '@react-navigation/elements';
+import { PlatformPressable } from '@react-navigation/elements';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { Box } from '@tamagui/lucide-icons';
-
-
+import { useThemeColors } from '../../store/themeColors';
+import { Text } from 'tamagui';
 export const BottomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
     const { colors } = useTheme();
     const { buildHref } = useLinkBuilder();
-    console.log("State", state)
-    console.log("Descriptors", descriptors)
-    console.log("navigation", navigation)
+    const theme = useColorScheme()
+    const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     return (
-        <View style={{ flexDirection: 'row', height: "auto" }}>
+        <View style={{ flexDirection: 'row', justifyContent: "space-evenly", height: 56, backgroundColor: themeColors.bg_color, borderTopColor: themeColors.b_color, borderTopWidth: StyleSheet.hairlineWidth }}>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
                 console.log("OPTIONS", options)
@@ -62,10 +60,10 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, 
                         testID={options.tabBarButtonTestID}
                         onPress={onPress}
                         onLongPress={onLongPress}
-                        style={{ flex: 1, alignItems: "center", flexDirection: "row", justifyContent: "center" }}
+                        style={{ alignSelf: "center", alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 8 }}
                     >
                         {icon}
-                        <Text style={{ color: isFocused ? colors.primary : colors.text }}>
+                        <Text>
                             {typeof label === 'function' ? (
                                 label({
                                     focused: isFocused,

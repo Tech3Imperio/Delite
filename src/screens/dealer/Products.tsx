@@ -1,15 +1,17 @@
 import React from 'react';
-import { Text } from 'react-native'; // Import necessary components
 
-import { View } from 'tamagui';
+import { View, Text } from 'tamagui';
+import { Wrapper } from '../../lib/wrapper';
 const Products = () => {
     return (
-        <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: "row" }}>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>All Products</Text>
+        <Wrapper>
+            <View
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: "row" }}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text>All Products</Text>
+                </View>
             </View>
-        </View>
+        </Wrapper>
     );
 };
 

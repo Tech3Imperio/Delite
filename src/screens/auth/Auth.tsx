@@ -1,17 +1,11 @@
 import React from 'react';
-import { useColorScheme } from 'react-native'; // Import necessary components
-import { XStack } from 'tamagui';
-import { useThemeColors } from '../../store/themeColors';
 import { SignInFrom } from '../../components/auth/SignInForm';
+import { Wrapper } from '../../lib/wrapper';
 const Auth = () => {
-
-    const theme = useColorScheme()
-    const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     return (
-        <XStack id='Test'
-            style={{ flex: 1, justifyContent: 'center', alignItems: "center", flexDirection: "row", backgroundColor: `${themeColors.bg_color}` }}>
+        <Wrapper>
             <SignInFrom />
-        </XStack >
+        </Wrapper>
     );
 };
 

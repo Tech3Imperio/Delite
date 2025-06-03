@@ -1,4 +1,5 @@
-import { createStaticNavigation, LinkingOptions, StaticParamList } from "@react-navigation/native";
+import { createStaticNavigation, LinkingOptions, StaticParamList, Theme } from "@react-navigation/native";
+import { DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { DealerTabs } from "./DealerTabNavigation";
 const DealerStack = createNativeStackNavigator({
@@ -21,7 +22,7 @@ declare global {
     }
 }
 
-export const DealerStackNavigation = () => {
+export const DealerStackNavigation = ({ theme }: { theme: Theme }) => {
 
     const linking: LinkingOptions<ReactNavigation.DealerParamsList> = {
         prefixes: ["delite://"],
@@ -29,5 +30,5 @@ export const DealerStackNavigation = () => {
     };
 
     const StaticDealerNavigation = createStaticNavigation(DealerStack);
-    return <StaticDealerNavigation linking={linking} />
+    return <StaticDealerNavigation linking={linking} theme={theme} />
 };
