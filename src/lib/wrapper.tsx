@@ -7,7 +7,7 @@ export const Wrapper = ({ children }: { children: ReactNode }) => {
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     return (
         <XStack id='Test'
-            style={{ flex: 1, justifyContent: 'center', alignItems: "center", flexDirection: "row", backgroundColor: `${themeColors.bg_color}` }}>
+            style={{ flex: 1, justifyContent: 'center', alignItems: "center", flexDirection: "row", backgroundColor: `${themeColors.bg_color}`, padding: 20 }}>
             {children}
         </XStack >
     )

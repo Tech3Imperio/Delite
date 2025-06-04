@@ -1,14 +1,16 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DealerDashboard from '../../screens/dealer/DealerDashboard';
 import Products from '../../screens/dealer/Products';
-import { BottomTabBar } from './BottomTabBar';
+import { BottomTabBar } from '../../components/dealer/BottomTabBar';
 import { Box, ScrollText } from '@tamagui/lucide-icons';
+import { BottomTabHeader } from '../../components/dealer/BottomTabHeader';
 
 export const DealerTabs = createBottomTabNavigator({
     tabBar: (props) => <BottomTabBar {...props} />,
     initialRouteName: "Orders",
     screenOptions: {
-        headerShown: false,
+        headerShown: true,
+        header: (props) => <BottomTabHeader {...props} />
     },
     screens: {
         Orders: {

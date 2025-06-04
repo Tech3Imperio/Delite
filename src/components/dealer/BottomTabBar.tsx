@@ -10,7 +10,7 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, 
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     return (
-        <View style={{ flexDirection: 'row', justifyContent: "space-evenly", height: 56, backgroundColor: themeColors.bg_color, borderTopColor: themeColors.b_color, borderTopWidth: StyleSheet.hairlineWidth }}>
+        <View style={{ flexDirection: 'row', justifyContent: "space-evenly", height: 48, backgroundColor: themeColors.bg_color, borderTopColor: themeColors.b_color, borderTopWidth: StyleSheet.hairlineWidth }}>
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
                 console.log("OPTIONS", options)
