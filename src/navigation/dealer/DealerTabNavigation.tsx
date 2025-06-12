@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DealerDashboard from '../../screens/dealer/DealerDashboard';
-import Products from '../../screens/dealer/Products';
+import Accessories from '../../screens/dealer/Accessories';
 import { BottomTabBar } from '../../components/dealer/BottomTabBar';
 import { Box, ScrollText } from '@tamagui/lucide-icons';
 import { BottomTabHeader } from '../../components/dealer/BottomTabHeader';
@@ -20,9 +20,9 @@ export const DealerTabs = createBottomTabNavigator({
                 tabBarIcon: () => <ScrollText size={16} strokeWidth={1.5} />
             }
         },
-        Products: {
-            linking: "/products",
-            screen: Products,
+        Accessories: {
+            linking: "/accessories",
+            screen: Accessories,
             options: {
                 tabBarIcon: () => <Box size={16} strokeWidth={1.5} />
             }

@@ -1,133 +1,345 @@
-import { Finish } from "./common";
-
-enum DotFinish {
-    SSMATT = "SSMatt",
-    SSGLOSSY = "SSGlossy",
-    GOLDMATT = "GoldMatt",
-    GOLDGLOSSY = "GoldGlossy",
-    ROSEGOLDMATT = "RoseGoldMatt",
-    ROSEGOLDGLOSSY = "RoseGoldGLossy",
-    BLACKMATT = "BlackMatt",
-    BLACKGLOSSY = "BlackGlossy"
-}
-
-type BaseName = {
-    ACE: { anchorType: "C10", ID: "A50" },
-    PRO: { anchorType: "H10", ID: "L50" },
-    SMART: { anchorType: "H10", ID: "C75" },
-    MINI: { anchorType: "H8", ID: "F55" },
-    SEMIPRO: { anchorType: "H10", ID: "C50" },
-    SEMISMART: { anchorType: "H10", ID: "D75" },
-    SEMIMINI: { anchorType: "H8", ID: "D55" },
-    LUX: { anchorType: "C10", ID: "T100" },
-    SPIGOT: { anchorType: "C10", ID: "E80" },
-    DOT: { anchorType: "M12", ID: "E50" },
-    MICRO: { anchorType: "NA", ID: "F40" }
-};
-
-type BaseType<T extends keyof BaseName> = BaseName[T];
-
+import { Anchor, Cover, BaseEndCap, CoverProtocol, createBaseEndCapProtocol, createAnchorProtocol, createHandRailProtocol } from "./accessories";
+import { BaseName, BaseType, DotFinishCode, DotFinishName, FinishName, FinishCode, HandrailName, FinishNameProtocol, FinishCodeProtocol, DotFinishNameProtocol, DotFinishCodeProtocol, BaseNameProtocol, HandrailNameProtocol } from "./common";
+import { Handrail } from "./accessories";
+import { z } from 'zod'
 
 type AceBaseType<T extends keyof BaseName> = {
     size: number;
     quantity: number;
-    finish: Finish;
-    coverQuantity: [number, number]
-    endCapQuantity: number;
-    anchorType: BaseType<T>["anchorType"]
-    anchorSize: number
+    finish: { color: FinishName, code: FinishCode };
+    cover: Cover
+    endCap: BaseEndCap<T>;
+    anchor: Anchor<T>
+}
+
+export function createAceBaseProtocol<T extends keyof BaseName>(baseKey: T) {
+    return z.object({
+        finish: z.object({
+            color: FinishNameProtocol.refine((val) => Object.values(FinishNameProtocol.enum).includes(val), {
+                message: "Invalid finish color",
+            }),
+            code: FinishCodeProtocol.refine((val) => Object.values(FinishCodeProtocol.enum).includes(val), {
+                message: "Invalid finish code",
+            }),
+        }, { required_error: "Finish is required" }),
+        size: z.number({ required_error: "Size is required" }),
+        quantity: z.number({ required_error: "Quantity is required" }),
+        cover: CoverProtocol,
+        endCap: createBaseEndCapProtocol(baseKey),
+        anchor: createAnchorProtocol(baseKey)
+    }) satisfies z.ZodType<AceBaseType<T>>
 }
 
 type ContinousBaseType<T extends keyof BaseName> = {
     length: number;
     quantity: number;
-    finish: Finish;
-    endCapQuantity: number;
-    anchorType: BaseType<T>["anchorType"]
-    anchorSize: number
+    finish: { color: FinishName, code: FinishCode };
+    endCap: BaseEndCap<T>;
+    anchor: Anchor<T>
+}
+
+export function createContinousBaseProtocol<T extends keyof BaseName>(baseKey: T) {
+    return z.object({
+        finish: z.object({
+            color: FinishNameProtocol.refine((val) => Object.values(FinishNameProtocol.enum).includes(val), {
+                message: "Invalid finish color",
+            }),
+            code: FinishCodeProtocol.refine((val) => Object.values(FinishCodeProtocol.enum).includes(val), {
+                message: "Invalid finish code",
+            }),
+        }, { required_error: "Finish is required" }),
+        length: z.number({ required_error: "Length is required" }),
+        quantity: z.number({ required_error: "Quantity is required" }),
+        endCap: createBaseEndCapProtocol(baseKey),
+        anchor: createAnchorProtocol(baseKey)
+    }) satisfies z.ZodType<ContinousBaseType<T>>
 }
 
 type SemiBaseType<T extends keyof BaseName> = {
     quantity: number;
-    finish: Finish;
-    anchorType: BaseType<T>["anchorType"]
-    anchorSize: number
+    finish: { color: FinishName, code: FinishCode };
+    anchor: Anchor<T>
+}
+
+export function createSemiBaseProtocol<T extends keyof BaseName>(baseKey: T) {
+    return z.object({
+        finish: z.object({
+            color: FinishNameProtocol.refine((val) => Object.values(FinishNameProtocol.enum).includes(val), {
+                message: "Invalid finish color",
+            }),
+            code: FinishCodeProtocol.refine((val) => Object.values(FinishCodeProtocol.enum).includes(val), {
+                message: "Invalid finish code",
+            }),
+        }, { required_error: "Finish is required" }),
+        quantity: z.number({ required_error: "Quantity is required" }),
+        anchor: createAnchorProtocol(baseKey)
+    }) satisfies z.ZodType<SemiBaseType<T>>
 }
 
 type SpigotBaseType<T extends keyof BaseName> = {
     size: 100 | 150 | 200 | 250 | 300;
     quantity: number;
-    finish: Finish;
-    anchorType: BaseType<T>["anchorType"]
-    anchorSize: number
+    finish: { color: FinishName, code: FinishCode };
+    anchor: Anchor<T>
+}
+
+export function createSpigotBaseProtocol<T extends keyof BaseName>(baseKey: T) {
+    return z.object({
+        finish: z.object({
+            color: FinishNameProtocol.refine((val) => Object.values(FinishNameProtocol.enum).includes(val), {
+                message: "Invalid finish color",
+            }),
+            code: FinishCodeProtocol.refine((val) => Object.values(FinishCodeProtocol.enum).includes(val), {
+                message: "Invalid finish code",
+            }),
+        }, { required_error: "Finish is required" }),
+        quantity: z.number({ required_error: "Quantity is required" }),
+        anchor: createAnchorProtocol(baseKey),
+        size: z.union([
+            z.literal(100),
+            z.literal(150),
+            z.literal(200),
+            z.literal(250),
+            z.literal(300)
+        ]),
+    }) satisfies z.ZodType<SpigotBaseType<T>>
 }
 
 type DotBaseType<T extends keyof BaseName> = {
     grade: 304 | 316;
     size: 50 | 38;
     quantity: number;
-    finish: DotFinish;
-    anchorType: BaseType<T>["anchorType"]
-    anchorSize: 100
+    finish: { color: DotFinishName, code: DotFinishCode };
+    anchor: Anchor<T>
+}
+
+export function createDotBaseProtocol<T extends keyof BaseName>(baseKey: T) {
+    return z.object({
+        finish: z.object({
+            color: DotFinishNameProtocol.refine((val) => Object.values(DotFinishNameProtocol.enum).includes(val), {
+                message: "Invalid finish color",
+            }),
+            code: DotFinishCodeProtocol.refine((val) => Object.values(DotFinishCodeProtocol.enum).includes(val), {
+                message: "Invalid finish code",
+            }),
+        }, { required_error: "Finish is required" }),
+        quantity: z.number({ required_error: "Quantity is required" }),
+        anchor: createAnchorProtocol(baseKey),
+        size: z.union([
+            z.literal(50),
+            z.literal(38),
+        ]),
+        grade: z.union([
+            z.literal(304),
+            z.literal(316)
+        ])
+    }) satisfies z.ZodType<DotBaseType<T>>
 }
 
 type MicroBaseType<T extends keyof BaseName> = {
     quantity: number;
     length: 12;
-    finish: Finish;
-    anchorType: BaseType<T>["anchorType"]
+    finish: { color: FinishName, code: FinishCode };
+    anchor: Anchor<T>
 }
 
-export type ACE<T extends keyof BaseName = "ACE"> = {
-    baseProfileID: BaseType<T>["ID"]
-    base: AceBaseType<T>[];
+export function createMicroBaseProtocol<T extends keyof BaseName>(baseKey: T) {
+    return z.object({
+        finish: z.object({
+            color: FinishNameProtocol.refine((val) => Object.values(FinishNameProtocol.enum).includes(val), {
+                message: "Invalid finish color",
+            }),
+            code: FinishCodeProtocol.refine((val) => Object.values(FinishCodeProtocol.enum).includes(val), {
+                message: "Invalid finish code",
+            }),
+        }, { required_error: "Finish is required" }),
+        quantity: z.number({ required_error: "Quantity is required" }),
+        anchor: createAnchorProtocol(baseKey),
+        length: z.literal(12)
+    }) satisfies z.ZodType<MicroBaseType<T>>
 }
 
-export type Pro<T extends keyof BaseName = "PRO"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: ContinousBaseType<T>[];
-}
-export type Smart<T extends keyof BaseName = "SMART"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: ContinousBaseType<T>[];
-}
-export type Mini<T extends keyof BaseName = "MINI"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: ContinousBaseType<T>[];
-}
-export type SemiPro<T extends keyof BaseName = "SEMIPRO"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: SemiBaseType<T>[];
-}
-export type SemiSmart<T extends keyof BaseName = "SEMISMART"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: SemiBaseType<T>[];
-}
-export type SemiMini<T extends keyof BaseName = "SEMIMINI"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: SemiBaseType<T>[];
-}
-export type Lux<T extends keyof BaseName = "LUX"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: SemiBaseType<T>[];
+// export type Ace<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"ACE">["ID"]
+//     base: AceBaseType<"ACE">[];
+//     handrail: Handrail<K>
+// }
+
+export function createAceProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["ACE"].shape.ID,
+        base: z.array(createAceBaseProtocol("ACE")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
 }
 
-export type Spigot<T extends keyof BaseName = "SPIGOT"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: SpigotBaseType<T>[];
+export type Ace<K extends keyof HandrailName> = z.infer<ReturnType<typeof createAceProtocol<K>>>;
+
+// export type Pro<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"PRO">["ID"];
+//     base: ContinousBaseType<"PRO">[];
+//     handrail: Handrail<K>
+// }
+
+export function createProProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["PRO"].shape.ID,
+        base: z.array(createContinousBaseProtocol("PRO")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
 }
 
-export type Dot<T extends keyof BaseName = "DOT"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: DotBaseType<T>[];
+export type Pro<K extends keyof HandrailName> = z.infer<ReturnType<typeof createProProtocol<K>>>;
+
+
+// export type Smart<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"SMART">["ID"];
+//     base: ContinousBaseType<"SMART">[];
+//     handrail: Handrail<K>
+// }
+
+export function createSmartProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["SMART"].shape.ID,
+        base: z.array(createContinousBaseProtocol("SMART")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
 }
 
-export type Micro<T extends keyof BaseName = "MICRO"> = {
-    baseProfileID: BaseType<T>["ID"];
-    base: MicroBaseType<T>[];
+export type Smart<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSmartProtocol<K>>>;
+
+
+// export type Mini<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"MINI">["ID"];
+//     base: ContinousBaseType<"MINI">[];
+//     handrail: Handrail<K>
+// }
+
+export function createMiniProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["MINI"].shape.ID,
+        base: z.array(createContinousBaseProtocol("MINI")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
 }
 
+export type Mini<K extends keyof HandrailName> = z.infer<ReturnType<typeof createMiniProtocol<K>>>;
 
 
+// export type SemiPro<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"SEMIPRO">["ID"];
+//     base: SemiBaseType<"SEMIPRO">[];
+//     handrail: Handrail<K>
+// }
+
+export function createSemiProProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["SEMIPRO"].shape.ID,
+        base: z.array(createSemiBaseProtocol("SEMIPRO")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
+}
+
+export type SemiPro<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSemiProProtocol<K>>>;
 
 
+// export type SemiSmart<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"SEMISMART">["ID"];
+//     base: SemiBaseType<"SEMISMART">[];
+//     handrail: Handrail<K>
+// }
+
+export function createSemiSmartProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["SEMISMART"].shape.ID,
+        base: z.array(createSemiBaseProtocol("SEMISMART")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
+}
+
+export type SemiSmart<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSemiSmartProtocol<K>>>;
+
+
+// export type SemiMini<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"SEMIMINI">["ID"];
+//     base: SemiBaseType<"SEMIMINI">[];
+//     handrail: Handrail<K>
+// }
+
+export function createSemiMiniProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["SEMIMINI"].shape.ID,
+        base: z.array(createSemiBaseProtocol("SEMIMINI")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
+}
+
+export type SemiMini<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSemiMiniProtocol<K>>>;
+
+
+// export type Lux<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"LUX">["ID"];
+//     base: SemiBaseType<"LUX">[];
+//     handrail: Handrail<K>
+// }
+
+export function createLuxProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["LUX"].shape.ID,
+        base: z.array(createSemiBaseProtocol("LUX")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
+}
+
+export type Lux<K extends keyof HandrailName> = z.infer<ReturnType<typeof createLuxProtocol<K>>>;
+
+
+// export type Spigot<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"SPIGOT">["ID"];
+//     base: SpigotBaseType<"SPIGOT">[];
+//     handrail: Handrail<K>
+// }
+
+export function createSpigotProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["SPIGOT"].shape.ID,
+        base: z.array(createSpigotBaseProtocol("SPIGOT")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
+}
+
+export type Spigot<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSpigotProtocol<K>>>;
+
+
+// export type Dot<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"DOT">["ID"];
+//     base: DotBaseType<"DOT">[];
+//     handrail: Handrail<K>
+// }
+
+export function createDotProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["DOT"].shape.ID,
+        base: z.array(createDotBaseProtocol("DOT")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
+}
+
+export type Dot<K extends keyof HandrailName> = z.infer<ReturnType<typeof createDotProtocol<K>>>;
+
+
+// export type Micro<K extends keyof HandrailName> = {
+//     baseProfileID: BaseType<"MICRO">["ID"];
+//     base: MicroBaseType<"MICRO">[];
+//     handrail: Handrail<K>
+// }
+
+export function createMicroProtocol<K extends keyof HandrailName>(handrailKey: K) {
+    return z.object({
+        baseProfileID: BaseNameProtocol.shape["MICRO"].shape.ID,
+        base: z.array(createMicroBaseProtocol("MICRO")),
+        handrail: createHandRailProtocol(handrailKey)
+    })
+}
+
+export type Micro<K extends keyof HandrailName> = z.infer<ReturnType<typeof createMicroProtocol<K>>>;

@@ -2,17 +2,17 @@ import React from 'react';
 
 import { View, Text } from 'tamagui';
 import { Wrapper } from '../../lib/wrapper';
-const Products = () => {
+const Accessories = () => {
     return (
         <Wrapper>
             <View
                 style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: "row" }}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text>All Products</Text>
+                    <Text>All Accessories</Text>
                 </View>
             </View>
         </Wrapper>
     );
 };
 
-export default Products;
+export default Accessories;
