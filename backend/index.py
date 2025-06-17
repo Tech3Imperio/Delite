@@ -35,3 +35,9 @@ def read_root():
 def tester():
     testfun()
     return {"message": "users"}
+
+
+@app.get("/accessories")
+def getAccessories():
+    accessories = supabase.table("accessories").select("*").execute()
+    return accessories

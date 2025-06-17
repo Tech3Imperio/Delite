@@ -1,6 +1,6 @@
 import React from 'react';
 import { SignInFrom } from '../../components/auth/SignInForm';
-import { Wrapper } from '../../lib/wrapper';
+import { Wrapper } from '../../lib/Wrapper';
 const Auth = () => {
     return (
         <Wrapper>

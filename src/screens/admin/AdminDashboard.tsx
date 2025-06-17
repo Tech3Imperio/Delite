@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { View, Text } from 'tamagui';
 import { AuthContext } from '../../navigation/auth/AuthContext';
 import { removeToken } from '../../utils/auth/session';
-import { Wrapper } from '../../lib/wrapper';
+import { Wrapper } from '../../lib/Wrapper';
 type AdminDashboardParamProp = StaticScreenProps<{}>
 const AdminDashboard = ({ route }: AdminDashboardParamProp) => {
     const navigation = useNavigation<NativeStackNavigationProp<ReactNavigation.AdminParamsList>>()

@@ -1,6 +1,6 @@
 import { BottomTabHeaderProps } from "@react-navigation/bottom-tabs"
 import { useColorScheme, StyleSheet, Platform } from "react-native"
-import { View, Image, Text } from "tamagui"
+import { View, Image } from "tamagui"
 import { useThemeColors } from "../../store/themeColors"
 import { UserCircle } from "@tamagui/lucide-icons"
 

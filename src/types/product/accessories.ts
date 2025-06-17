@@ -220,7 +220,7 @@ export function createAccessoriesProtocol<K extends keyof HandrailName>(
     });
 }
 
-type Accessories<K extends keyof HandrailName> = z.infer<ReturnType<typeof createAccessoriesProtocol<K>>>;
+type HandrailAccessories<K extends keyof HandrailName> = z.infer<ReturnType<typeof createAccessoriesProtocol<K>>>;
 
 
 export type Handrail<K extends keyof HandrailName> = {
@@ -228,7 +228,7 @@ export type Handrail<K extends keyof HandrailName> = {
     handrailCode: HandrailType<K>["code"],
     finish: { color: FinishName, code: FinishCode };
     length: [number, number];
-    accessories: Accessories<K>;
+    accessories: HandrailAccessories<K>;
     glassThickness: 12 | 13.52 | 17.52 | 21.52;
 }
 

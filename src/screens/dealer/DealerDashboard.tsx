@@ -4,7 +4,7 @@ import { View, Text, XStack } from 'tamagui';
 import { AuthContext } from '../../navigation/auth/AuthContext';
 import { removeToken } from '../../utils/auth/session';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { Wrapper } from '../../lib/wrapper';
+import { Wrapper } from '../../lib/Wrapper';
 import { Button } from 'tamagui';
 import { Plus } from '@tamagui/lucide-icons';
 import { NewOrderSheet } from '../../components/dealer/newOrder/NewOrderSheet';
