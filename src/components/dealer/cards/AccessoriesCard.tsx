@@ -1,21 +1,46 @@
 import { Button, Card, Image, Paragraph, XStack, Text } from 'tamagui'
 import { useColorScheme, } from 'react-native'
 import { Plus } from '@tamagui/lucide-icons'
-import { NewOrderSheet } from '../newOrder/NewOrderSheet';
 import { useState } from 'react';
+import { AccessoryCode, NewAccessorySheet } from '../sheets/NewAccessorySheet';
+import { HandrailSelect } from '../../../lib/HandrailSelect';
+import { BaseName, HandrailName } from '../../../types/product/common';
+import { Baseselect } from '../../../lib/BaseSelect';
+
 
 export type Accessory = {
     name: string;
     description: string;
     thumbnail: string
-    code: string
+    code: AccessoryCode
     created_at?: string
 }
 
 export function AccessoriesCard({ accessory }: { accessory: Accessory }) {
     const theme = useColorScheme()
-    const bg = theme === 'light' ? "$white2" : "$black3"
-    const [open, setOpen] = useState<boolean>(false)
+    const bg = theme === 'light' ? "#f9f9f9" : "$black3"
+    const [openAccessoryList, setOpenAccessoryList] = useState<boolean>(false)
+    const [openAccessorySheet, setOpenAccessorySheet] = useState<boolean>(false)
+    const [handrail, setHandrail] = useState<keyof HandrailName | null>(null)
+    const [base, setBase] = useState<keyof BaseName | null>(null)
+
+    const handleHandrailSheet = (handrailName: keyof HandrailName) => {
+        console.log("reached handleSheet", handrailName)
+        setHandrail((prev) => prev = handrailName)
+        setTimeout(() => {
+            setOpenAccessorySheet(true)
+        }, 100)
+    }
+
+    const handleBaseSheet = (baseName: keyof BaseName) => {
+        console.log("reached handleSheet", baseName)
+        setBase((prev) => prev = baseName)
+        setTimeout(() => {
+            setOpenAccessorySheet(true)
+        }, 100)
+    }
+
+    const forBase = ["BC", "BA", "BB", "BEC"].includes(accessory.code);
 
     return (<>
         <Card size="$2" width="100%" height={150} bg={bg} borderRadius={12}>
@@ -44,7 +69,7 @@ export function AccessoriesCard({ accessory }: { accessory: Accessory }) {
                         style={{
                             marginTop: -20
                         }}
-                        onPress={() => setOpen(true)}
+                        onPress={() => accessory.code === "BC" ? setOpenAccessorySheet(!openAccessorySheet) : setOpenAccessoryList(true)}
                     >
                         <XStack gap="$1" style={{ justifyContent: "center", alignItems: "center" }}>
                             <Plus size={12} />
@@ -54,7 +79,10 @@ export function AccessoriesCard({ accessory }: { accessory: Accessory }) {
                 </XStack>
             </XStack>
         </Card >
-        {open && <NewOrderSheet open={open} setOpen={setOpen} />}
+        {openAccessorySheet && <NewAccessorySheet open={openAccessorySheet} setOpen={setOpenAccessorySheet} code={accessory.code} handrailName={handrail} baseName={base} forBase={forBase} accessory={accessory} />}
+        {openAccessoryList && (
+            forBase ? <Baseselect open={openAccessoryList} setOpen={setOpenAccessoryList} openAccessorySheet={handleBaseSheet} /> : <HandrailSelect open={openAccessoryList} setOpen={setOpenAccessoryList} openAccessorySheet={handleHandrailSheet} />
+        )}
     </>
     )
 }

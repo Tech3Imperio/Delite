@@ -1,7 +1,7 @@
 // import "react-native-get-random-values"
 import React from 'react';
 import { Navigation } from './navigation/Navigation';
-import { TamaguiProvider } from 'tamagui'
+import { TamaguiProvider, PortalProvider } from 'tamagui'
 import { config } from './tamagui.config';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useThemeColors } from './store/themeColors';
@@ -18,7 +18,9 @@ const App = () => {
         style={{ flex: 1, backgroundColor: `${bg_color}` }}>
         <TamaguiProvider config={config} defaultTheme={themeName}>
           <AuthProvider>
-            <Navigation />
+            <PortalProvider shouldAddRootHost>
+              <Navigation />
+            </PortalProvider>
           </AuthProvider>
         </TamaguiProvider>
       </SafeAreaView>

@@ -1,29 +1,42 @@
 import React from 'react'
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SelectProps } from 'tamagui'
-import { Adapt, Label, Select, Sheet, XStack, YStack } from 'tamagui'
+import { Adapt, Text, Select, Sheet, XStack, YStack } from 'tamagui'
 import { FinishName } from '../types/product/common'
-export function SelectDemo() {
+import { Noop } from 'react-hook-form'
+
+type SelectDemoProps<T> = {
+    value: T
+    onChange: (...event: any[]) => void,
+    onBlur: Noop
+}
+
+export function SelectDemo<T extends string>({ onChange, onBlur, value }: SelectDemoProps<T>) {
     return (
-        <YStack gap="$4">
-            <XStack gap="$4" style={{ width: "100%", alignItems: "center" }}>
-                <Label htmlFor="select-demo-1" flex={1} style={{ minWidth: 80 }}>
-                    Finish
-                </Label>
-                <SelectDemoItem id="select-demo-1" />
-            </XStack>
+        <YStack gap="$2" style={{ width: 150, alignItems: "start", justifyContent: "flex-start", gap: 12 }}>
+            <Text htmlFor='select-demo-1' style={{ fontSize: 14, fontWeight: "bold" }}>Finish</Text>
+            <SelectDemoItem id="select-demo-1" value={value}
+                onChange={onChange}
+                onBlur={onBlur} />
         </YStack>
     )
 }
+type SelectDemoItemProps<T> = SelectProps & {
+    value: T
+    onChange: (value: string) => void
+    onBlur: Noop
+}
+export function SelectDemoItem<T>({ value,
+    onChange,
+    onBlur,
+    ...props }: SelectDemoItemProps<T> & { trigger?: React.ReactNode }) {
 
-export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode }) {
-    const [val, setVal] = React.useState(items[0].name.toLowerCase())
 
     return (
-        <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props} >
+        <Select value={value} onValueChange={onChange} disablePreventBodyScroll {...props}>
             {props?.trigger || (
-                <Select.Trigger maxWidth={150} iconAfter={ChevronDown} padding={10} fontSize={8}>
-                    <Select.Value fontSize={14} />
+                <Select.Trigger maxWidth={150} size={"$2"} iconAfter={ChevronDown} padding={10} pt={0} pb={0} height={28} fontSize={8}>
+                    <Select.Value fontSize={14} placeholder={"Select color"} />
                 </Select.Trigger>
             )}
 
@@ -65,7 +78,8 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
                                         <Select.Item
                                             index={i}
                                             key={item.name}
-                                            value={item.name.toLowerCase()}
+                                            value={item.name}
+                                            size={"$3"}
                                         >
                                             <Select.ItemText>{item.name}</Select.ItemText>
                                             <Select.ItemIndicator marginLeft="auto">

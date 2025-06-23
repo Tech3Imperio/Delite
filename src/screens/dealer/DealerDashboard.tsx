@@ -7,7 +7,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Wrapper } from '../../lib/Wrapper';
 import { Button } from 'tamagui';
 import { Plus } from '@tamagui/lucide-icons';
-import { NewOrderSheet } from '../../components/dealer/newOrder/NewOrderSheet';
+import { NewOrderSheet } from '../../components/dealer/sheets/NewOrderSheet';
 type DealerDashboardParamProp = StaticScreenProps<{}>
 const DealerDashboard = ({ route }: DealerDashboardParamProp) => {
     const navigation = useNavigation<BottomTabNavigationProp<ReactNavigation.DealerParamsList>>()

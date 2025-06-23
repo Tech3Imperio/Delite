@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useColorScheme } from "react-native"
 import { Sheet } from "tamagui"
 import { useThemeColors } from "../../../store/themeColors"
-import { CoverSheet } from "../sheets/CoverSheet"
+import { CoverForm } from "../forms/CoverForm"
 
 
 export const NewOrderSheet = ({ open, setOpen }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
@@ -28,7 +28,7 @@ export const NewOrderSheet = ({ open, setOpen }: { open: boolean, setOpen: React
                 enterStyle={{ opacity: 0 }}
                 exitStyle={{ opacity: 0 }} />
             <Sheet.Handle style={{ backgroundColor: themeColors.s_color }} />
-            <Sheet.Frame style={{ backgroundColor: themeColors.s_color, padding: 20 }}><CoverSheet /></Sheet.Frame>
+            <Sheet.Frame style={{ backgroundColor: themeColors.s_color, padding: 20 }}><CoverForm /></Sheet.Frame>
         </Sheet>
     )
 }
