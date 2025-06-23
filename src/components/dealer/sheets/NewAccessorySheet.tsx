@@ -1,67 +1,75 @@
 import { useState } from "react"
 import { useColorScheme } from "react-native"
-import { Sheet, View, Text, YStack } from "tamagui"
+import { Sheet, View, Text } from "tamagui"
 import { useThemeColors } from "../../../store/themeColors"
 import { CoverForm } from "../forms/CoverForm"
 import { AnchorForm } from "../forms/AnchorForm"
-import { BaseName, HandrailName } from "../../../types/product/common"
+import { BaseName, HandrailName, ModularBendHandrailName } from "../../../types/product/common"
 import { WallBracketForm } from "../forms/WallBracketForm"
 import { StyleSheet } from "react-native"
 import { Accessory } from "../cards/AccessoriesCard"
+import { BaseBlockForm } from "../forms/BaseBlockForm"
+import { CornerForm } from "../forms/CornerForm"
+import { HandrailEndCapForm } from "../forms/HandrailEndCap"
+import { JoinerForm } from "../forms/Joiner"
+import { EPDMRubberFrom } from "../forms/EPDMRubberForm"
+import { ModularBendForm } from "../forms/ModularBendForm"
+import { BaseEndCapForm } from "../forms/BaseEndCapForm"
+import { HandrailForm } from "../forms/HandrailForm"
 const accessoryForms: {
     BA: typeof AnchorForm,
     BC: typeof CoverForm,
-    BB: string
-    BEC: string
-    CC: string
-    FC: string
-    H: string
-    HEC: string
-    LJ: string
-    RG: string
+    BB: typeof BaseBlockForm
+    BEC: typeof BaseEndCapForm
+    CC: typeof CornerForm
+    FC: typeof ModularBendForm
+    H: typeof HandrailForm
+    HEC: typeof HandrailEndCapForm
+    LJ: typeof JoinerForm
+    RG: typeof EPDMRubberFrom
     WB: typeof WallBracketForm
 } = {
     BA: AnchorForm,
     BC: CoverForm,
-    BB: "string",
-    BEC: "string",
-    CC: "string",
-    FC: "string",
-    H: "string",
-    HEC: "string",
-    LJ: "string",
-    RG: "string",
+    BB: BaseBlockForm,
+    BEC: BaseEndCapForm,
+    CC: CornerForm,
+    FC: ModularBendForm,
+    H: HandrailForm,
+    HEC: HandrailEndCapForm,
+    LJ: JoinerForm,
+    RG: EPDMRubberFrom,
     WB: WallBracketForm,
 }
 
 const handrailAccessoryForms: {
-    CC: string
-    FC: string
-    H: string
-    HEC: string
-    LJ: string
-    RG: string
+    CC: typeof CornerForm
+    FC: typeof ModularBendForm
+    H: typeof HandrailForm
+    HEC: typeof HandrailEndCapForm
+    LJ: typeof JoinerForm
+    RG: typeof EPDMRubberFrom
     WB: typeof WallBracketForm
 } = {
-    CC: "string",
-    FC: "string",
-    H: "string",
-    HEC: "string",
-    LJ: "string",
-    RG: "string",
+    CC: CornerForm,
+    FC: ModularBendForm,
+    H: HandrailForm,
+    HEC: HandrailEndCapForm,
+    LJ: JoinerForm,
+    RG: EPDMRubberFrom,
     WB: WallBracketForm,
 }
 
 const baseAccessoryForms: {
     BA: typeof AnchorForm,
     BC: typeof CoverForm,
-    BB: string
-    BEC: string
+    BB: typeof BaseBlockForm
+    BEC: typeof BaseEndCapForm
 } = {
     BA: AnchorForm,
     BC: CoverForm,
-    BB: "string",
-    BEC: "string",
+    BB: BaseBlockForm,
+    BEC: BaseEndCapForm,
 }
 
 export type AccessoryCode = keyof typeof accessoryForms
@@ -70,7 +78,7 @@ export type BaseAccessoryCode = keyof typeof baseAccessoryForms
 
 
 export const NewAccessorySheet = ({ open, setOpen, accessory, code, handrailName, baseName, forBase }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, accessory: Accessory, code: HandrailAccessoryCode | BaseAccessoryCode, handrailName: keyof HandrailName | null, baseName: keyof BaseName | null, forBase: boolean }) => {
-    if (code === "BC") {
+    if (code === "BC" || code === "BB") {
         baseName = "ACE"
     }
     console.log("accessory", accessory)
@@ -86,7 +94,7 @@ export const NewAccessorySheet = ({ open, setOpen, accessory, code, handrailName
             zIndex={100_000}
             position={position}
             onPositionChange={setPosition}
-            snapPoints={[75]}
+            snapPoints={[80]}
             animation={"quick"}
             onOpenChange={setOpen}
             dismissOnSnapToBottom={true}
@@ -107,11 +115,20 @@ export const NewAccessorySheet = ({ open, setOpen, accessory, code, handrailName
                             return FormComponent ? <FormComponent baseKey={baseName} setOpen={setOpen} /> : null
                         }
 
+                        // if (!forBase && handrailName) {
+                        //     const FormComponent = handrailAccessoryForms[code as HandrailAccessoryCode]
+                        //     return FormComponent ? (
+                        //         <FormComponent handrailKey={handrailName} setOpen={setOpen} />
+                        //     ) : null
+                        // }
+
                         if (!forBase && handrailName) {
                             const FormComponent = handrailAccessoryForms[code as HandrailAccessoryCode]
-                            return FormComponent ? (
-                                <FormComponent handrailKey={handrailName} setOpen={setOpen} />
-                            ) : null
+                            if (FormComponent) {
+                                const Component = FormComponent as React.ComponentType<{ handrailKey: keyof HandrailName | ModularBendHandrailName; setOpen: React.Dispatch<React.SetStateAction<boolean>> }>
+                                return <Component handrailKey={handrailName} setOpen={setOpen} />
+                            }
+                            return null
                         }
 
                         return null

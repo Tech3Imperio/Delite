@@ -1,4 +1,4 @@
-import { FinishCode, FinishName } from "../../../types/product/common";
+import { FinishCode, FinishName } from "../../types/product/common";
 
 export function toPascalCase(str: string) {
     return str

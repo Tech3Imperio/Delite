@@ -1,42 +1,41 @@
 import React from 'react'
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import type { SelectProps } from 'tamagui'
-import { Adapt, Text, Select, Sheet, XStack, YStack } from 'tamagui'
-import { FinishName } from '../types/product/common'
+import { Adapt, Text, Select, Sheet, YStack } from 'tamagui'
 import { Noop } from 'react-hook-form'
 
-type SelectDemoProps<T> = {
-    value: T
+type SelectGlassThicknessProps = {
+    value: number
     onChange: (...event: any[]) => void,
     onBlur: Noop
 }
 
-export function SelectDemo<T extends string>({ onChange, onBlur, value }: SelectDemoProps<T>) {
+export function SelectGlassThickness<T>({ onChange, onBlur, value }: SelectGlassThicknessProps) {
     return (
         <YStack gap="$2" style={{ width: 150, alignItems: "start", justifyContent: "flex-start", gap: 12 }}>
-            <Text htmlFor='select-demo-1' style={{ fontSize: 14, fontWeight: "bold" }}>Finish</Text>
-            <SelectDemoItem id="select-demo-1" value={value}
+            <Text htmlFor='select-demo-1' style={{ fontSize: 14, fontWeight: "bold" }}>Glass Thickness</Text>
+            <SelectGlassThicknessItem id="select-demo-1" value={value?.toString()}
                 onChange={onChange}
                 onBlur={onBlur} />
         </YStack>
     )
 }
-type SelectDemoItemProps<T> = SelectProps & {
-    value: T
+type SelectGlassThicknessItemProps = SelectProps & {
+    value: string
     onChange: (...event: any[]) => void
     onBlur: Noop
 }
-export function SelectDemoItem<T>({ value,
+export function SelectGlassThicknessItem<T>({ value,
     onChange,
     onBlur,
-    ...props }: SelectDemoItemProps<T> & { trigger?: React.ReactNode }) {
+    ...props }: SelectGlassThicknessItemProps & { trigger?: React.ReactNode }) {
 
 
     return (
-        <Select value={value} onValueChange={onChange} disablePreventBodyScroll {...props}>
+        <Select value={value} onValueChange={(val) => onChange(Number(val))} disablePreventBodyScroll {...props}>
             {props?.trigger || (
                 <Select.Trigger maxWidth={150} size={"$2"} iconAfter={ChevronDown} padding={10} pt={0} pb={0} height={28} fontSize={8}>
-                    <Select.Value fontSize={14} placeholder={"Select color"} />
+                    <Select.Value fontSize={14} placeholder={"Glass Thickness"} />
                 </Select.Trigger>
             )}
 
@@ -77,11 +76,11 @@ export function SelectDemoItem<T>({ value,
                                     return (
                                         <Select.Item
                                             index={i}
-                                            key={item.name}
-                                            value={item.name}
+                                            key={item.glassThickness}
+                                            value={item.glassThickness.toString()}
                                             size={"$3"}
                                         >
-                                            <Select.ItemText>{item.name}</Select.ItemText>
+                                            <Select.ItemText>{item.glassThickness}</Select.ItemText>
                                             <Select.ItemIndicator marginLeft="auto">
                                                 <Check size={16} />
                                             </Select.ItemIndicator>
@@ -108,10 +107,8 @@ export function SelectDemoItem<T>({ value,
 }
 
 const items = [
-    { name: FinishName.BLACK },
-    { name: FinishName.CHAMPAGNE },
-    { name: FinishName.CUSTOM },
-    { name: FinishName.RAW },
-    { name: FinishName.SILVER },
-    { name: FinishName.WOOD },
+    { glassThickness: 12 },
+    { glassThickness: 13.52 },
+    { glassThickness: 17.52 },
+    { glassThickness: 21.52 },
 ]

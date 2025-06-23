@@ -3,13 +3,13 @@ import { Input, XStack, YStack, Text, Button, View } from "tamagui";
 import { useColorScheme } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useThemeColors } from "../../../store/themeColors";
-import { Cover, CoverProtocol } from "../../../types/product/accessories";
+import { BaseBlock, BaseBlockProtocol } from "../../../types/product/accessories";
 import { SelectDemo } from "../../../lib/Select";
 import { useEffect } from "react";
 import { getFinishCode } from "../../../utils/dealer/getFinishCode";
 import { QuantityInput } from "../../../lib/QuantityInput";
-export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
-    console.log("In cover form")
+export const BaseBlockForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+    console.log("In Base Block form")
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     const {
@@ -18,8 +18,8 @@ export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
         watch,
         setValue,
         formState: { errors },
-    } = useForm<Cover>({
-        resolver: zodResolver(CoverProtocol),
+    } = useForm<BaseBlock>({
+        resolver: zodResolver(BaseBlockProtocol),
         mode: "onBlur",
     })
 
@@ -33,8 +33,8 @@ export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
         }
     }, [watch("finish.color")])
 
-    const onSubmit: SubmitHandler<Cover> = async (data) => {
-        console.log("Data from Cover", data)
+    const onSubmit: SubmitHandler<BaseBlock> = async (data) => {
+        console.log("Data from base block", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",
@@ -60,11 +60,11 @@ export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
     return (
         <>
             <YStack id="Test" height={"85%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "space-between", gap: 16 }}>
-                <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16 }}>
+                <YStack width={"100%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16, }}>
                     <Text style={{ fontSize: 14, fontWeight: "bold" }}>Quantity</Text>
-                    <View style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                        <XStack style={{ justifyContent: "flex-start", alignItems: "center", gap: 24 }}>
-                            <Text style={{ fontSize: 14 }}>For 12mm</Text>
+                    <View width={"100%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8, }}>
+                        <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24, }}>
+                            <Text style={{ fontSize: 14 }}>For 75 mm</Text>
                             <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
                                 <Controller
                                     control={control}
@@ -74,15 +74,15 @@ export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                     )}
-                                    name="coverLength.0"
+                                    name="baseBlockQuantity.0"
                                 />
-                                {errors.coverLength?.[0] && (
-                                    <Text style={{ color: "red", fontSize: 12, }}>{errors.coverLength[0].message}</Text>
+                                {errors.baseBlockQuantity?.[0] && (
+                                    <Text style={{ color: "red", fontSize: 12, }}>{errors.baseBlockQuantity[0].message}</Text>
                                 )}
                             </YStack>
                         </XStack>
-                        <XStack style={{ justifyContent: "flex-start", alignItems: "center", gap: 24 }}>
-                            <Text style={{ fontSize: 14 }}>For 15mm</Text>
+                        <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
+                            <Text style={{ fontSize: 14 }}>For 100 mm</Text>
                             <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
                                 <Controller
                                     control={control}
@@ -92,10 +92,46 @@ export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                     )}
-                                    name="coverLength.1"
+                                    name="baseBlockQuantity.1"
                                 />
-                                {errors.coverLength?.[1] && (
-                                    <Text style={{ color: "red", fontSize: 12 }}>{errors.coverLength[1].message}</Text>
+                                {errors.baseBlockQuantity?.[1] && (
+                                    <Text style={{ color: "red", fontSize: 12 }}>{errors.baseBlockQuantity[1].message}</Text>
+                                )}
+                            </YStack>
+                        </XStack>
+                        <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24, }}>
+                            <Text style={{ fontSize: 14 }}>For 150 mm</Text>
+                            <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        maxLength: 100,
+                                    }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                    )}
+                                    name="baseBlockQuantity.2"
+                                />
+                                {errors.baseBlockQuantity?.[2] && (
+                                    <Text style={{ color: "red", fontSize: 12 }}>{errors.baseBlockQuantity[2].message}</Text>
+                                )}
+                            </YStack>
+                        </XStack>
+                        <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24, }}>
+                            <Text style={{ fontSize: 14 }}>For 300 mm</Text>
+                            <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        maxLength: 100,
+                                    }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                    )}
+                                    name="baseBlockQuantity.3"
+                                />
+                                {errors.baseBlockQuantity?.[3] && (
+                                    <Text style={{ color: "red", fontSize: 12 }}>{errors.baseBlockQuantity[3].message}</Text>
                                 )}
                             </YStack>
                         </XStack>

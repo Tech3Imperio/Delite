@@ -6,6 +6,7 @@ import { AccessoryCode, NewAccessorySheet } from '../sheets/NewAccessorySheet';
 import { HandrailSelect } from '../../../lib/HandrailSelect';
 import { BaseName, HandrailName } from '../../../types/product/common';
 import { Baseselect } from '../../../lib/BaseSelect';
+import { ModularBendHandrailSelect } from '../../../lib/ModularBendHandrailSelect';
 
 
 export type Accessory = {
@@ -41,6 +42,7 @@ export function AccessoriesCard({ accessory }: { accessory: Accessory }) {
     }
 
     const forBase = ["BC", "BA", "BB", "BEC"].includes(accessory.code);
+    const isModularBend = accessory.code === "FC"
 
     return (<>
         <Card size="$2" width="100%" height={150} bg={bg} borderRadius={12}>
@@ -69,7 +71,7 @@ export function AccessoriesCard({ accessory }: { accessory: Accessory }) {
                         style={{
                             marginTop: -20
                         }}
-                        onPress={() => accessory.code === "BC" ? setOpenAccessorySheet(!openAccessorySheet) : setOpenAccessoryList(true)}
+                        onPress={() => accessory.code === "BC" || accessory.code === "BB" ? setOpenAccessorySheet(!openAccessorySheet) : setOpenAccessoryList(true)}
                     >
                         <XStack gap="$1" style={{ justifyContent: "center", alignItems: "center" }}>
                             <Plus size={12} />
@@ -81,7 +83,7 @@ export function AccessoriesCard({ accessory }: { accessory: Accessory }) {
         </Card >
         {openAccessorySheet && <NewAccessorySheet open={openAccessorySheet} setOpen={setOpenAccessorySheet} code={accessory.code} handrailName={handrail} baseName={base} forBase={forBase} accessory={accessory} />}
         {openAccessoryList && (
-            forBase ? <Baseselect open={openAccessoryList} setOpen={setOpenAccessoryList} openAccessorySheet={handleBaseSheet} /> : <HandrailSelect open={openAccessoryList} setOpen={setOpenAccessoryList} openAccessorySheet={handleHandrailSheet} />
+            forBase ? <Baseselect open={openAccessoryList} setOpen={setOpenAccessoryList} openAccessorySheet={handleBaseSheet} /> : isModularBend ? <ModularBendHandrailSelect open={openAccessoryList} setOpen={setOpenAccessoryList} openAccessorySheet={handleHandrailSheet} /> : <HandrailSelect open={openAccessoryList} setOpen={setOpenAccessoryList} openAccessorySheet={handleHandrailSheet} />
         )}
     </>
     )

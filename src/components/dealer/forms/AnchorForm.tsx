@@ -1,93 +1,146 @@
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { Input, YStack, Text } from "tamagui";
-import { useColorScheme } from "react-native";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useThemeColors } from "../../../store/themeColors";
-import { Anchor, Cover, createAnchorProtocol } from "../../../types/product/accessories";
-import { BaseName } from "../../../types/product/common";
-// import { FinishCode, FinishName } from "../../../types/product/common";
-export const AnchorForm = ({ baseKey, setOpen }: { baseKey: keyof BaseName, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { Input, XStack, YStack, Text, Button } from 'tamagui';
+import { useColorScheme } from 'react-native';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useThemeColors } from '../../../store/themeColors';
+import {
+    Anchor,
+    createAnchorProtocol,
+} from '../../../types/product/accessories';
+import { useEffect } from 'react';
+import { QuantityInput } from '../../../lib/QuantityInput';
+import { BaseName, BaseType } from '../../../types/product/common';
+import { baseValues } from '../../../lib/BaseSelect';
+import { SelectAnchorSize } from '../../../lib/AnchorSizeSelect';
+
+export const AnchorForm = ({
+    baseKey,
+    setOpen,
+}: {
+    baseKey: keyof BaseName;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
+
     const {
         control,
         handleSubmit,
+        setValue,
         formState: { errors },
-    } = useForm<Anchor<typeof baseKey>>({
+    } = useForm<Anchor<keyof BaseName>>({
         resolver: zodResolver(createAnchorProtocol(baseKey)),
-        mode: "onBlur",
-    })
+        mode: 'onBlur',
+    });
 
-    const onSubmit: SubmitHandler<Cover> = async (data) => {
-        // try {
-        //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(data),
-        //     });
-        //     const result = await response.json();
-        //     if (result.success) {
-        //         await storeToken(result.access_token)
-        //         signIn(result.role)
-        //     }
-        // } catch (error) {
-        //     if (error instanceof Error) {
-        //         console.error("Sign-in error:", error.message);
-        //     } else {
-        //         console.error("Sign-in error:", error);
-        //     }
-        // }
+    const baseValue: BaseType<typeof baseKey> = baseValues[baseKey];
+
+    useEffect(() => {
+        setValue("baseProfileID", baseValue.ID as Anchor<typeof baseKey>["baseProfileID"]);
+        setValue("anchorID", baseValue.anchorID as Anchor<typeof baseKey>["anchorID"]);
+        setValue("anchorType", baseValue.anchorType as Anchor<typeof baseKey>["anchorType"]);
+
+    }, []);
+
+    const onSubmit: SubmitHandler<Anchor<keyof BaseName>> = async data => {
+        console.log('Submitted BaseEndCap data:', data);
     };
 
     return (
-        <>
-            <YStack gap={16} id="Test">
+        <YStack
+            height={"85%"}
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: 16,
+            }}>
+            <YStack style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: 16,
+            }}>
+                <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
+                    <Text style={{ fontSize: 14 }}>Base Name</Text>
+                    <Input
+                        defaultValue={baseKey}
+                        editable={false}
+                        size="$3"
+                        pt={0}
+                        pb={0}
+                        placeholder="Handrail Code"
+                        placeholderTextColor={baseValue.ID}
+                    />
+                </YStack>
+                <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
+                    <Text style={{ fontSize: 14 }}>Base ID</Text>
+                    <Input
+                        defaultValue={baseValue.ID}
+                        editable={false}
+                        size="$3"
+                        pt={0}
+                        pb={0}
+                        placeholder="Handrail Code"
+                        placeholderTextColor={themeColors.ph_color}
+                    />
+                </YStack>
+                <YStack gap={16}>
+                    <Text style={{ fontSize: 14, fontWeight: 'bold' }}>End Cap Quantity</Text>
+                    <XStack gap={30} style={{ alignItems: 'center' }}>
+                        <Text>Left</Text>
+                        <Controller
+                            control={control}
+                            name="quantity"
+                            render={({ field: { onChange, value, onBlur } }) => (
+                                <QuantityInput
+                                    value={value}
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                />
+                            )}
+                        />
+                        {errors.quantity && (
+                            <Text style={{ color: 'red', fontSize: 12 }}>
+                                {errors.quantity.message}
+                            </Text>
+                        )}
+                    </XStack>
+                </YStack>
                 <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                    <Text style={{ fontSize: 14 }}>Anchor Length Quantity</Text>
-                    <YStack style={{ display: "flex", flexDirection: "row", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                        <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                            <Controller
-                                control={control}
-                                rules={{
-                                    maxLength: 100,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <Input pl={12} width={150} keyboardType="numeric" inputMode="numeric" onChangeText={(text) => {
-                                        const sanitized = text.replace(/[^0-9]/g, ''); // allows only digits
-                                        const num = Number(sanitized);
-                                        onChange(Number.isNaN(num) ? undefined : num);
-                                    }} value={value?.toString()} size="$2" placeholder='For 12 Feet' paddingBlock={0} onBlur={onBlur} placeholderTextColor={themeColors.ph_color} />
-                                )}
-                                name="anchorSize"
-                            />
-                            {errors.anchorSize && (
-                                <Text style={{ color: "red", fontSize: 12, }}>{errors.anchorSize.message}</Text>
-                            )}
-                        </YStack>
-                        <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                            <Controller
-                                control={control}
-                                rules={{
-                                    maxLength: 100,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <Input width={150} keyboardType="numeric" inputMode="numeric" onChangeText={(text) => {
-                                        const sanitized = text.replace(/[^0-9]/g, ''); // allows only digits
-                                        const num = Number(sanitized);
-                                        onChange(Number.isNaN(num) ? undefined : num);
-                                    }} value={value?.toString()} size="$2" placeholder='For 15 Feet' paddingBlock={0} onBlur={onBlur} placeholderTextColor={themeColors.ph_color} />
-                                )}
-                                name="quantity"
-                            />
-                            {errors.quantity && (
-                                <Text style={{ color: "red", fontSize: 12 }}>{errors.quantity.message}</Text>
-                            )}
-                        </YStack>
-                    </YStack>
+                    <Controller
+                        control={control}
+                        rules={{
+                            maxLength: 100,
+                        }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <SelectAnchorSize onChange={onChange} onBlur={onBlur} value={value} />
+                        )}
+                        name="anchorSize"
+                    />
+                    {errors.anchorSize && (
+                        <Text style={{ color: "red", fontSize: 12 }}>{errors.anchorSize.message}</Text>
+                    )}
                 </YStack>
             </YStack>
-        </>
-    )
-}
+
+            {/* Actions */}
+            <XStack gap={'$2'} style={{ alignSelf: 'flex-end' }}>
+                <Button
+                    size="$3"
+                    width={100}
+                    variant="outlined"
+                    onPress={() => setOpen(prev => !prev)}>
+                    Cancel
+                </Button>
+                <Button
+                    size="$3"
+                    width={100}
+                    themeInverse
+                    onPress={handleSubmit(onSubmit)}>
+                    Place Order
+                </Button>
+            </XStack>
+        </YStack>
+    );
+};

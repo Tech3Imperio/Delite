@@ -1,6 +1,20 @@
 import { BaseName, BaseType, FinishName, FinishCode, HandrailName, ModularBendHandrailName, FinishNameProtocol, FinishCodeProtocol, HandrailNameProtocol, HandrailType, ModularBendHandrailNameProtocol, ModularBendHandrailType, BaseNameProtocol } from "./common"
 import { z } from "zod"
 
+export const BaseBlockProtocol = z.object({
+    finish: z.object({
+        color: FinishNameProtocol.refine((val) => Object.values(FinishNameProtocol.enum).includes(val), {
+            message: "Invalid finish color",
+        }),
+        code: FinishCodeProtocol.refine((val) => Object.values(FinishCodeProtocol.enum).includes(val), {
+            message: "Invalid finish code",
+        }),
+    }, { required_error: "Finish is required" }),
+    baseBlockQuantity: z.tuple([z.number({ required_error: "Q1 is required" }), z.number({ required_error: "Q2 is required" }), z.number({ required_error: "Q3 is required" }), z.number({ required_error: "Q4 is required" })], { required_error: "Quantity is required is required" }),
+});
+
+export type BaseBlock = z.infer<typeof BaseBlockProtocol>;
+
 export const CoverProtocol = z.object({
     finish: z.object({
         color: FinishNameProtocol.refine((val) => Object.values(FinishNameProtocol.enum).includes(val), {
@@ -145,8 +159,8 @@ export function createJoinerProtocol<K extends keyof HandrailName>(
 export type ModularBend<K extends keyof ModularBendHandrailName> = {
     finish: { color: FinishName, code: FinishCode };
     modularBendQuantity: number;
-    handrailType: HandrailType<K>["name"],
-    handrailCode: HandrailType<K>["code"],
+    handrailType: ModularBendHandrailType<K>["name"],
+    handrailCode: ModularBendHandrailType<K>["code"],
 }
 
 export function createModularBendProtocol<K extends keyof ModularBendHandrailName>(
@@ -161,8 +175,8 @@ export function createModularBendProtocol<K extends keyof ModularBendHandrailNam
                 message: "Invalid finish code",
             }),
         }, { required_error: "Finish is required" }),
-        handrailType: HandrailNameProtocol.shape[handrailKey].shape.name,
-        handrailCode: HandrailNameProtocol.shape[handrailKey].shape.code,
+        handrailType: ModularBendHandrailNameProtocol.shape[handrailKey].shape.name,
+        handrailCode: ModularBendHandrailNameProtocol.shape[handrailKey].shape.code,
         modularBendQuantity: z.number({ required_error: "Wall Bracket Quantity is required" }),
     }) satisfies z.ZodType<ModularBend<K>>;
 }
@@ -175,7 +189,7 @@ export type EPDMRubber<K extends keyof HandrailName> = {
     glassThickness: 12 | 13.52 | 17.52 | 21.52;
 }
 
-export function createEPDMRubberrotocol<K extends keyof HandrailName>(
+export function createEPDMRubberprotocol<K extends keyof HandrailName>(
     handrailKey: K
 ) {
     return z.object({
@@ -228,7 +242,7 @@ export type Handrail<K extends keyof HandrailName> = {
     handrailCode: HandrailType<K>["code"],
     finish: { color: FinishName, code: FinishCode };
     length: [number, number];
-    accessories: HandrailAccessories<K>;
+    accessories?: HandrailAccessories<K>;
     glassThickness: 12 | 13.52 | 17.52 | 21.52;
 }
 
@@ -250,7 +264,7 @@ export function createHandRailProtocol<K extends keyof HandrailName>(
             z.number({ required_error: "Length L1 is required" }),
             z.number({ required_error: "Length L2 is required" }),
         ], { required_error: "Length is required" }),
-        accessories: createAccessoriesProtocol(handrailKey),
+        accessories: createAccessoriesProtocol(handrailKey).optional(),
         glassThickness: z.union([
             z.literal(12),
             z.literal(13.52),

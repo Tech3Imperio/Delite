@@ -1,6 +1,6 @@
 import { Input, XStack, Button } from 'tamagui';
 import { useColorScheme } from 'react-native';
-import { useThemeColors } from '../../../store/themeColors';
+import { useThemeColors } from '../store/themeColors';
 import { Noop } from 'react-hook-form';
 
 type QuantityProps = {
