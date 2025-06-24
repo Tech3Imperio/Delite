@@ -68,7 +68,7 @@ export function WallBracketForm<K extends keyof HandrailName>({ handrailKey, set
 
   return (
     <>
-      <YStack id="Test" height={"85%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "space-between", gap: 16 }}>
+      <YStack id="Test" flex={1} style={{ alignItems: "start", justifyContent: "space-between", gap: 16 }}>
         <YStack width={"100%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16, }}>
           <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
             <Text style={{ fontSize: 14 }}>Handrail Name</Text>

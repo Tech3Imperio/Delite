@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { Input, XStack, YStack, Text, Button, View } from "tamagui";
+import { Input, XStack, YStack, Text, Button, View, ScrollView } from "tamagui";
 import { useColorScheme } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useThemeColors } from "../../../store/themeColors";
@@ -13,6 +13,7 @@ import { handrailValues } from "../../../lib/HandrailSelect";
 import { SelectGlassThickness } from "../../../lib/SelectGlassThickness";
 export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpen }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
     console.log("In Handrail form")
+    const isModularBend = handrailKey === "ROUND50" || handrailKey === "SQUARE40" || handrailKey === "SQUARE50"
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     const {
@@ -26,20 +27,40 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
         mode: "onBlur",
     })
 
+    const accessoryKeys = [
+        "corner",
+        "endCap",
+        "wallBracket",
+        "epdmRubber",
+        "joiner",
+        "modularBend"
+    ] as const;
+
     useEffect(() => {
         const color = watch("finish.color")
+        const thickness = watch("glassThickness")
         console.log("Color", color)
         const code = color !== undefined && getFinishCode(color)
         console.log("In useEffect", code)
         if (code) {
-            setValue("finish.code", code) // or a mapping function if needed
+            setValue("finish.code", code) // or a mapping function if nethieded
         }
-    }, [watch("finish.color")])
-
-    useEffect(() => {
         setValue("handrailType", handrailValue.name as Handrail<K>["handrailType"]);
         setValue("handrailCode", handrailValue.code as Handrail<K>["handrailCode"]);
-    }, []);
+        for (const key of accessoryKeys) {
+            setValue(`accessories.${key}.handrailType`, handrailValue.name);
+            setValue(`accessories.${key}.handrailCode`, handrailValue.code);
+            setValue(`accessories.${key}.finish.color`, color);
+            if (code) {
+                setValue(`accessories.${key}.finish.code`, code);
+            }
+        }
+        setValue("accessories.epdmRubber.glassThickness", thickness)
+        if (!isModularBend) {
+            setValue("accessories.modularBend", null)
+        }
+        console.log("reached end of useEffect")
+    }, [watch("finish.color"), watch("glassThickness")])
 
     const handrailValue: HandrailType<typeof handrailKey> = handrailValues[handrailKey];
 
@@ -69,8 +90,12 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
 
     return (
         <>
-            <YStack id="Test" height={"85%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "space-between", gap: 16 }}>
-                <YStack width={"100%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16, }}>
+            <YStack id="Test" flex={1} style={{ alignItems: "start", justifyContent: "space-between", gap: 16 }}>
+                <ScrollView width={"100%"} contentContainerStyle={{
+                    verticalAlign: "center",
+                    justify: 'flex-start',
+                    gap: 16
+                }}>
                     <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
                         <Text style={{ fontSize: 14 }}>Handrail Name</Text>
                         <Input
@@ -98,7 +123,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                     <YStack style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", gap: 16 }}>
                         <Text style={{ fontSize: 14, fontWeight: "bold" }}>Length</Text>
                         <View style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                            <XStack style={{ justifyContent: "flex-start", alignItems: "center", gap: 24 }}>
+                            <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
                                 <Text style={{ fontSize: 14 }}>For 12mm</Text>
                                 <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
                                     <Controller
@@ -116,7 +141,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                     )}
                                 </YStack>
                             </XStack>
-                            <XStack style={{ justifyContent: "flex-start", alignItems: "center", gap: 24 }}>
+                            <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
                                 <Text style={{ fontSize: 14 }}>For 15mm</Text>
                                 <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
                                     <Controller
@@ -131,6 +156,47 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                     />
                                     {errors.length?.[1] && (
                                         <Text style={{ color: "red", fontSize: 12 }}>{errors.length[1].message}</Text>
+                                    )}
+                                </YStack>
+                            </XStack>
+                        </View>
+                    </YStack>
+                    <YStack style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", gap: 16 }}>
+                        <Text style={{ fontSize: 14, fontWeight: "bold" }}>End Cap Quantity</Text>
+                        <View style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                            <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
+                                <Text style={{ fontSize: 14 }}>Left</Text>
+                                <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                    <Controller
+                                        control={control}
+                                        rules={{
+                                            maxLength: 100,
+                                        }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                        )}
+                                        name="accessories.endCap.endCapLeftQuantity"
+                                    />
+                                    {errors.accessories?.endCap?.endCapLeftQuantity && (
+                                        <Text style={{ color: "red", fontSize: 12, }}>{errors.accessories.endCap.endCapLeftQuantity.message}</Text>
+                                    )}
+                                </YStack>
+                            </XStack>
+                            <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
+                                <Text style={{ fontSize: 14 }}>Right</Text>
+                                <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                    <Controller
+                                        control={control}
+                                        rules={{
+                                            maxLength: 100,
+                                        }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                        )}
+                                        name="accessories.endCap.endCapRightQuantity"
+                                    />
+                                    {errors.accessories?.endCap?.endCapRightQuantity && (
+                                        <Text style={{ color: "red", fontSize: 12, }}>{errors.accessories.endCap.endCapRightQuantity.message}</Text>
                                     )}
                                 </YStack>
                             </XStack>
@@ -181,7 +247,106 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                             <Text style={{ color: "red", fontSize: 12 }}>{errors.glassThickness.message}</Text>
                         )}
                     </YStack>
-                </YStack>
+                    <YStack style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "space-between", gap: 8 }}>
+                        <Text style={{ fontSize: 14, fontWeight: "bold" }}>Accessories Quantity</Text>
+                        <View style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                            <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
+                                <Text style={{ fontSize: 14 }}>Corner</Text>
+                                <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                    <Controller
+                                        control={control}
+                                        rules={{
+                                            maxLength: 100,
+                                        }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                        )}
+                                        name="accessories.corner.cornerQuantity"
+                                    />
+                                    {errors.accessories?.corner?.cornerQuantity && (
+                                        <Text style={{ color: "red", fontSize: 12, }}>{errors.accessories.corner.cornerQuantity.message}</Text>
+                                    )}
+                                </YStack>
+                            </XStack>
+                            <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
+                                <Text style={{ fontSize: 14 }}>Wall Bracket</Text>
+                                <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                    <Controller
+                                        control={control}
+                                        rules={{
+                                            maxLength: 100,
+                                        }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                        )}
+                                        name="accessories.wallBracket.wallBracketQuantity"
+                                    />
+                                    {errors.accessories?.wallBracket?.wallBracketQuantity && (
+                                        <Text style={{ color: "red", fontSize: 12 }}>{errors.accessories.wallBracket.wallBracketQuantity.message}</Text>
+                                    )}
+                                </YStack>
+                            </XStack>
+                            <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
+                                <Text style={{ fontSize: 14 }}>EPDM Rubber</Text>
+                                <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                    <Controller
+                                        control={control}
+                                        rules={{
+                                            maxLength: 100,
+                                        }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                        )}
+                                        name="accessories.epdmRubber.epdmRubberQuantity"
+                                    />
+                                    {errors.accessories?.epdmRubber?.epdmRubberQuantity && (
+                                        <Text style={{ color: "red", fontSize: 12 }}>{errors.accessories.epdmRubber.epdmRubberQuantity.message}</Text>
+                                    )}
+                                </YStack>
+                            </XStack>
+                            <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
+                                <Text style={{ fontSize: 14 }}>Joiner</Text>
+                                <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                    <Controller
+                                        control={control}
+                                        rules={{
+                                            maxLength: 100,
+                                        }}
+                                        render={({ field: { onChange, onBlur, value } }) => (
+                                            <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                        )}
+                                        name="accessories.joiner.joinerQuantity"
+                                    />
+                                    {errors.accessories?.joiner?.joinerQuantity && (
+                                        <Text style={{ color: "red", fontSize: 12 }}>{errors.accessories.joiner.joinerQuantity.message}</Text>
+                                    )}
+                                </YStack>
+                            </XStack>
+                            {
+                                isModularBend && (
+                                    <XStack width={"65%"} style={{ justifyContent: "space-between", alignItems: "center", gap: 24 }}>
+                                        <Text style={{ fontSize: 14 }}>Modular Bend</Text>
+                                        <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                            <Controller
+                                                control={control}
+                                                rules={{
+                                                    maxLength: 100,
+                                                }}
+                                                render={({ field: { onChange, onBlur, value } }) => (
+                                                    <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                                )}
+                                                name="accessories.modularBend.modularBendQuantity"
+                                            />
+                                            {errors.accessories?.modularBend?.modularBendQuantity && (
+                                                <Text style={{ color: "red", fontSize: 12 }}>{errors.accessories.modularBend.modularBendQuantity.message}</Text>
+                                            )}
+                                        </YStack>
+                                    </XStack>
+                                )
+                            }
+                        </View>
+                    </YStack>
+                </ScrollView>
                 <XStack gap={"$2"} style={{ alignSelf: "flex-end" }}>
                     <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={100} variant="outlined" onPress={() => setOpen(prev => !prev)}>Cancel</Button>
                     <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={100} themeInverse onPress={handleSubmit(onSubmit)}>Place Order</Button>

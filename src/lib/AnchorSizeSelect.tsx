@@ -32,7 +32,6 @@ export function SelectAnchorSizeItem({ value,
     onBlur,
     ...props }: SelectAnchorSizeItemsProps & { trigger?: React.ReactNode }) {
 
-
     return (
         <Select value={value} onValueChange={(val) => onChange(Number(val))} disablePreventBodyScroll {...props}>
             {props?.trigger || (

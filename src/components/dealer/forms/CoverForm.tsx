@@ -59,7 +59,7 @@ export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
 
     return (
         <>
-            <YStack id="Test" height={"85%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "space-between", gap: 16 }}>
+            <YStack id="Test" flex={1} style={{ alignItems: "start", justifyContent: "space-between", gap: 16 }}>
                 <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16 }}>
                     <Text style={{ fontSize: 14, fontWeight: "bold" }}>Quantity</Text>
                     <View style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>

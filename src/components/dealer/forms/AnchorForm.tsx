@@ -47,14 +47,7 @@ export const AnchorForm = ({
     };
 
     return (
-        <YStack
-            height={"85%"}
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                gap: 16,
-            }}>
+        <YStack id="Test" flex={1} style={{ alignItems: "start", justifyContent: "space-between", gap: 16 }}>
             <YStack style={{
                 display: 'flex',
                 flexDirection: 'column',

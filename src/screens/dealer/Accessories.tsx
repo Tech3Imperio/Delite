@@ -34,7 +34,7 @@ const Accessories = () => {
 
         fetchAccessories()
     }, [])
-
+    console.log(accessories)
     if (accessories !== null) {
         return (
             <Wrapper>

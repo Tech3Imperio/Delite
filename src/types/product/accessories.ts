@@ -230,6 +230,7 @@ export function createAccessoriesProtocol<K extends keyof HandrailName>(
         endCap: createHandrailEndCapProtocol(handrailKey),
         corner: createCornerProtocol(handrailKey),
         joiner: createJoinerProtocol(handrailKey),
+        epdmRubber: createEPDMRubberprotocol(handrailKey),
         modularBend: hasModularBend ? createModularBendProtocol(handrailKey as keyof ModularBendHandrailName) : z.literal(null)
     });
 }
@@ -242,7 +243,7 @@ export type Handrail<K extends keyof HandrailName> = {
     handrailCode: HandrailType<K>["code"],
     finish: { color: FinishName, code: FinishCode };
     length: [number, number];
-    accessories?: HandrailAccessories<K>;
+    accessories: HandrailAccessories<K>;
     glassThickness: 12 | 13.52 | 17.52 | 21.52;
 }
 
@@ -264,7 +265,7 @@ export function createHandRailProtocol<K extends keyof HandrailName>(
             z.number({ required_error: "Length L1 is required" }),
             z.number({ required_error: "Length L2 is required" }),
         ], { required_error: "Length is required" }),
-        accessories: createAccessoriesProtocol(handrailKey).optional(),
+        accessories: createAccessoriesProtocol(handrailKey),
         glassThickness: z.union([
             z.literal(12),
             z.literal(13.52),

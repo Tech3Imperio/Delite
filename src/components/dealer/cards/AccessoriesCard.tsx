@@ -2,11 +2,12 @@ import { Button, Card, Image, Paragraph, XStack, Text } from 'tamagui'
 import { useColorScheme, } from 'react-native'
 import { Plus } from '@tamagui/lucide-icons'
 import { useState } from 'react';
-import { AccessoryCode, NewAccessorySheet } from '../sheets/NewAccessorySheet';
+import { NewAccessorySheet } from '../sheets/NewAccessorySheet';
 import { HandrailSelect } from '../../../lib/HandrailSelect';
 import { BaseName, HandrailName } from '../../../types/product/common';
 import { Baseselect } from '../../../lib/BaseSelect';
 import { ModularBendHandrailSelect } from '../../../lib/ModularBendHandrailSelect';
+import { AccessoryCode } from '../forms/AccessoryForms';
 
 
 export type Accessory = {

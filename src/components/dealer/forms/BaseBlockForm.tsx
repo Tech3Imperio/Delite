@@ -59,7 +59,7 @@ export const BaseBlockForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetSt
 
     return (
         <>
-            <YStack id="Test" height={"85%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "space-between", gap: 16 }}>
+            <YStack id="Test" flex={1} style={{ alignItems: "start", justifyContent: "space-between", gap: 16 }}>
                 <YStack width={"100%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16, }}>
                     <Text style={{ fontSize: 14, fontWeight: "bold" }}>Quantity</Text>
                     <View width={"100%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8, }}>

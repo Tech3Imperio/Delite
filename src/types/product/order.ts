@@ -1,5 +1,5 @@
 import { Ace, createAceProtocol, createDotProtocol, createLuxProtocol, createMicroProtocol, createMiniProtocol, createProProtocol, createSemiMiniProtocol, createSemiProProtocol, createSemiSmartProtocol, createSmartProtocol, createSpigotBaseProtocol, createSpigotProtocol, Dot, Lux, Micro, Mini, Pro, SemiMini, SemiPro, SemiSmart, Smart, Spigot } from "./base";
-import { Anchor, BaseEndCap, Corner, Cover, EPDMRubber, HandrailEndCap, Joiner, ModularBend, WallBracket, Handrail, CoverProtocol, createHandrailEndCapProtocol, createBaseEndCapProtocol, createWallBracketProtocol, createCornerProtocol, createJoinerProtocol, createModularBendProtocol, createEPDMRubberrotocol, createAccessoriesProtocol, createHandRailProtocol, createAnchorProtocol } from "./accessories";
+import { Anchor, BaseEndCap, Corner, Cover, EPDMRubber, HandrailEndCap, Joiner, ModularBend, WallBracket, Handrail, CoverProtocol, createHandrailEndCapProtocol, createBaseEndCapProtocol, createWallBracketProtocol, createCornerProtocol, createJoinerProtocol, createModularBendProtocol, createEPDMRubberprotocol, createAccessoriesProtocol, createHandRailProtocol, createAnchorProtocol } from "./accessories";
 import { BaseName, HandrailName, ModularBendHandrailName } from "./common";
 import { z } from "zod"
 type BaseProfileVariations = (Ace<keyof HandrailName> | Pro<keyof HandrailName> | Smart<keyof HandrailName> | Mini<keyof HandrailName> | SemiPro<keyof HandrailName> | SemiMini<keyof HandrailName> | SemiSmart<keyof HandrailName> | Lux<keyof HandrailName> | Spigot<keyof HandrailName> | Dot<keyof HandrailName> | Micro<keyof HandrailName>)[]
@@ -46,7 +46,7 @@ type AccessoryProtocolFunctionForHandrail =
     | typeof createWallBracketProtocol
     | typeof createCornerProtocol
     | typeof createJoinerProtocol
-    | typeof createEPDMRubberrotocol
+    | typeof createEPDMRubberprotocol
     | typeof createAccessoriesProtocol
     | typeof createHandRailProtocol
 
@@ -111,7 +111,7 @@ export const AccessoriesVariationsProtocol = z.union([
     z.array(returnUnionsForAccessoriesOfHandrail(createCornerProtocol)),
     z.array(returnUnionsForAccessoriesOfHandrail(createJoinerProtocol)),
     z.array(returnModularBendHandrailRelatedUnions(createModularBendProtocol)),
-    z.array(returnUnionsForAccessoriesOfHandrail(createEPDMRubberrotocol)),
+    z.array(returnUnionsForAccessoriesOfHandrail(createEPDMRubberprotocol)),
     z.array(returnUnionsForAccessoriesOfHandrail(createAccessoriesProtocol)),
     z.array(returnUnionsForAccessoriesOfHandrail(createHandRailProtocol)),
     z.array(returnUnionsForAccessoriesOfBase(createAnchorProtocol))

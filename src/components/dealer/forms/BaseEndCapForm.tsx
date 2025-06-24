@@ -58,13 +58,7 @@ export const BaseEndCapForm = ({
   };
 
   return (
-    <YStack
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        gap: 16,
-      }}>
+    <YStack id="Test" flex={1} style={{ alignItems: "start", justifyContent: "space-between", gap: 16 }}>
       <YStack gap={16}>
         <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
           <Text style={{ fontSize: 14 }}>Base Name</Text>
