@@ -36,9 +36,13 @@ export const HandrailSelect = ({ open, setOpen, openAccessorySheet }: { open: bo
 
     const handlePress = (handrailName: keyof HandrailName) => {
         console.log("Reached handlePress")
-        setOpen(!open)
-        openAccessorySheet(handrailName)
+        setPosition(1)
+        setTimeout(() => {
+            setOpen(!open)
+            openAccessorySheet(handrailName)
+        }, 300)
     }
+
 
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)

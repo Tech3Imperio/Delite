@@ -1,4 +1,4 @@
-import { FinishCode, FinishName } from "../../types/product/common";
+import { DotFinishCode, DotFinishName, FinishCode, FinishName } from "../../types/product/common";
 
 export function toPascalCase(str: string) {
     return str
@@ -15,4 +15,13 @@ export function getFinishCode(name: FinishName): FinishCode | undefined {
     )
 
     return key ? FinishCode[key] : undefined
+}
+
+export function getDotFinishCode(name: DotFinishName): DotFinishCode | undefined {
+    const color = toPascalCase(name)
+    const key = (Object.keys(DotFinishName) as Array<keyof typeof DotFinishName>).find(
+        (k) => DotFinishName[k] === color
+    )
+
+    return key ? DotFinishCode[key] : undefined
 }

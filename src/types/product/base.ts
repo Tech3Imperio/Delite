@@ -30,7 +30,7 @@ export function createAceBaseProtocol<T extends keyof BaseName>(baseKey: T) {
 }
 
 type ContinousBaseType<T extends keyof BaseName> = {
-    length: number;
+    length: [number, number];
     quantity: number;
     finish: { color: FinishName, code: FinishCode };
     endCap: BaseEndCap<T>;
@@ -47,7 +47,7 @@ export function createContinousBaseProtocol<T extends keyof BaseName>(baseKey: T
                 message: "Invalid finish code",
             }),
         }, { required_error: "Finish is required" }),
-        length: z.number({ required_error: "Length is required" }),
+        length: z.tuple([z.number({ required_error: "L1 is required" }), z.number({ required_error: "L2 is required" })], { required_error: "Cover Length is required" }),
         quantity: z.number({ required_error: "Quantity is required" }),
         endCap: createBaseEndCapProtocol(baseKey),
         anchor: createAnchorProtocol(baseKey)
@@ -168,7 +168,7 @@ export function createAceProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["ACE"].shape.ID,
         base: createAceBaseProtocol("ACE"),
-        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(undefined)
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
@@ -180,15 +180,15 @@ export type Ace = z.infer<ReturnType<typeof createAceProtocol>>
 //     handrail: Handrail<K>
 // }
 
-export function createProProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createProProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["PRO"].shape.ID,
-        base: z.array(createContinousBaseProtocol("PRO")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createContinousBaseProtocol("PRO"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type Pro<K extends keyof HandrailName> = z.infer<ReturnType<typeof createProProtocol<K>>>;
+export type Pro = z.infer<ReturnType<typeof createProProtocol>>;
 
 
 // export type Smart<K extends keyof HandrailName> = {
@@ -197,15 +197,15 @@ export type Pro<K extends keyof HandrailName> = z.infer<ReturnType<typeof create
 //     handrail: Handrail<K>
 // }
 
-export function createSmartProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createSmartProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["SMART"].shape.ID,
-        base: z.array(createContinousBaseProtocol("SMART")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createContinousBaseProtocol("SMART"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type Smart<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSmartProtocol<K>>>;
+export type Smart = z.infer<ReturnType<typeof createSmartProtocol>>;
 
 
 // export type Mini<K extends keyof HandrailName> = {
@@ -214,15 +214,15 @@ export type Smart<K extends keyof HandrailName> = z.infer<ReturnType<typeof crea
 //     handrail: Handrail<K>
 // }
 
-export function createMiniProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createMiniProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["MINI"].shape.ID,
-        base: z.array(createContinousBaseProtocol("MINI")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createContinousBaseProtocol("MINI"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type Mini<K extends keyof HandrailName> = z.infer<ReturnType<typeof createMiniProtocol<K>>>;
+export type Mini = z.infer<ReturnType<typeof createMiniProtocol>>;
 
 
 // export type SemiPro<K extends keyof HandrailName> = {
@@ -231,15 +231,15 @@ export type Mini<K extends keyof HandrailName> = z.infer<ReturnType<typeof creat
 //     handrail: Handrail<K>
 // }
 
-export function createSemiProProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createSemiProProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["SEMIPRO"].shape.ID,
-        base: z.array(createSemiBaseProtocol("SEMIPRO")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createSemiBaseProtocol("SEMIPRO"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type SemiPro<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSemiProProtocol<K>>>;
+export type SemiPro = z.infer<ReturnType<typeof createSemiProProtocol>>;
 
 
 // export type SemiSmart<K extends keyof HandrailName> = {
@@ -248,15 +248,15 @@ export type SemiPro<K extends keyof HandrailName> = z.infer<ReturnType<typeof cr
 //     handrail: Handrail<K>
 // }
 
-export function createSemiSmartProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createSemiSmartProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["SEMISMART"].shape.ID,
-        base: z.array(createSemiBaseProtocol("SEMISMART")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createSemiBaseProtocol("SEMISMART"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type SemiSmart<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSemiSmartProtocol<K>>>;
+export type SemiSmart = z.infer<ReturnType<typeof createSemiSmartProtocol>>;
 
 
 // export type SemiMini<K extends keyof HandrailName> = {
@@ -265,15 +265,15 @@ export type SemiSmart<K extends keyof HandrailName> = z.infer<ReturnType<typeof 
 //     handrail: Handrail<K>
 // }
 
-export function createSemiMiniProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createSemiMiniProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["SEMIMINI"].shape.ID,
-        base: z.array(createSemiBaseProtocol("SEMIMINI")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createSemiBaseProtocol("SEMIMINI"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type SemiMini<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSemiMiniProtocol<K>>>;
+export type SemiMini = z.infer<ReturnType<typeof createSemiMiniProtocol>>;
 
 
 // export type Lux<K extends keyof HandrailName> = {
@@ -282,15 +282,15 @@ export type SemiMini<K extends keyof HandrailName> = z.infer<ReturnType<typeof c
 //     handrail: Handrail<K>
 // }
 
-export function createLuxProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createLuxProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["LUX"].shape.ID,
-        base: z.array(createSemiBaseProtocol("LUX")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createSemiBaseProtocol("LUX"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type Lux<K extends keyof HandrailName> = z.infer<ReturnType<typeof createLuxProtocol<K>>>;
+export type Lux = z.infer<ReturnType<typeof createLuxProtocol>>;
 
 
 // export type Spigot<K extends keyof HandrailName> = {
@@ -299,15 +299,15 @@ export type Lux<K extends keyof HandrailName> = z.infer<ReturnType<typeof create
 //     handrail: Handrail<K>
 // }
 
-export function createSpigotProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createSpigotProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["SPIGOT"].shape.ID,
-        base: z.array(createSpigotBaseProtocol("SPIGOT")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createSpigotBaseProtocol("SPIGOT"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type Spigot<K extends keyof HandrailName> = z.infer<ReturnType<typeof createSpigotProtocol<K>>>;
+export type Spigot = z.infer<ReturnType<typeof createSpigotProtocol>>;
 
 
 // export type Dot<K extends keyof HandrailName> = {
@@ -316,15 +316,15 @@ export type Spigot<K extends keyof HandrailName> = z.infer<ReturnType<typeof cre
 //     handrail: Handrail<K>
 // }
 
-export function createDotProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createDotProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["DOT"].shape.ID,
-        base: z.array(createDotBaseProtocol("DOT")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createDotBaseProtocol("DOT"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type Dot<K extends keyof HandrailName> = z.infer<ReturnType<typeof createDotProtocol<K>>>;
+export type Dot = z.infer<ReturnType<typeof createDotProtocol>>;
 
 
 // export type Micro<K extends keyof HandrailName> = {
@@ -333,12 +333,12 @@ export type Dot<K extends keyof HandrailName> = z.infer<ReturnType<typeof create
 //     handrail: Handrail<K>
 // }
 
-export function createMicroProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createMicroProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["MICRO"].shape.ID,
-        base: z.array(createMicroBaseProtocol("MICRO")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createMicroBaseProtocol("MICRO"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type Micro<K extends keyof HandrailName> = z.infer<ReturnType<typeof createMicroProtocol<K>>>;
+export type Micro = z.infer<ReturnType<typeof createMicroProtocol>>;

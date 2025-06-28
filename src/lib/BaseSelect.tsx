@@ -38,8 +38,11 @@ export const Baseselect = ({ open, setOpen, openAccessorySheet }: { open: boolea
 
     const handlePress = (baseName: keyof BaseName) => {
         console.log("Reached handlePress")
-        setOpen(!open)
-        openAccessorySheet(baseName)
+        setPosition(1)
+        setTimeout(() => {
+            setOpen(!open)
+            openAccessorySheet(baseName)
+        }, 300)
     }
 
     const theme = useColorScheme()
@@ -53,7 +56,7 @@ export const Baseselect = ({ open, setOpen, openAccessorySheet }: { open: boolea
             zIndex={100_000}
             position={position}
             onPositionChange={setPosition}
-            snapPoints={[75]}
+            snapPoints={[75, 0]}
             animation={"quick"}
             onOpenChange={setOpen}
             dismissOnSnapToBottom={true}
