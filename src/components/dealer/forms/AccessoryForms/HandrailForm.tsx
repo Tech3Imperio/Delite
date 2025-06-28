@@ -11,7 +11,7 @@ import { QuantityInput } from "../../../../lib/QuantityInput";
 import { HandrailName, HandrailType } from "../../../../types/product/common";
 import { handrailValues } from "../../../../lib/HandrailSelect";
 import { SelectGlassThickness } from "../../../../lib/SelectGlassThickness";
-export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpen, withBase, handleCancel, addToBase }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>>, withBase?: boolean, handleCancel?: () => void, addToBase?: (data: Handrail<keyof HandrailName>) => void }) {
+export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpen, withBase, handleCancel, addToBase, defaultValues }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>>, withBase?: boolean, handleCancel?: () => void, addToBase?: (data: Handrail<keyof HandrailName>) => void, defaultValues?: Handrail<keyof HandrailName> }) {
     console.log("In Handrail form")
     const isModularBend = handrailKey === "ROUND50" || handrailKey === "SQUARE40" || handrailKey === "SQUARE50"
     const theme = useColorScheme()
@@ -25,6 +25,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
     } = useForm<Handrail<keyof HandrailName>>({
         resolver: zodResolver(createHandRailProtocol(handrailKey)),
         mode: "onBlur",
+        defaultValues: defaultValues
     })
 
     const accessoryKeys = [
@@ -368,8 +369,8 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                     </YStack>
                 </ScrollView>
                 <XStack gap={"$2"} style={{ alignSelf: "flex-end" }}>
-                    <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={120} variant="outlined" onPress={handleCancellation}>Cancel</Button>
-                    <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={120} themeInverse onPress={handleSubmit(onSubmit)}>{withBase ? "Add Handrail" : "Place Order"}</Button>
+                    <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={100} variant="outlined" onPress={handleCancellation}>Cancel</Button>
+                    <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={100} themeInverse onPress={handleSubmit(onSubmit)}>{withBase ? "Add" : "Place Order"}</Button>
                 </XStack>
             </YStack>
         </>

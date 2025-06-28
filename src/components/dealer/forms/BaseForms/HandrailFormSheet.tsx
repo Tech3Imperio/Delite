@@ -8,7 +8,7 @@ import { HandrailForm } from "../AccessoryForms/HandrailForm"
 import { Handrail } from "../../../../types/product/accessories"
 
 
-export const HandrailFormSheet = ({ open, setOpen, handrailName, handleCancel, addToBase }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, handrailName: keyof HandrailName, handleCancel: () => void, addToBase: (data: Handrail<keyof HandrailName>) => void }) => {
+export const HandrailFormSheet = ({ open, setOpen, handrailName, handleCancel, addToBase, defaultValues }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, handrailName: keyof HandrailName, handleCancel?: () => void, addToBase: (data: Handrail<keyof HandrailName>) => void, defaultValues?: Handrail<keyof HandrailName> }) => {
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     const [position, setPosition] = useState<number>(0)
@@ -37,7 +37,7 @@ export const HandrailFormSheet = ({ open, setOpen, handrailName, handleCancel, a
                 <View id="This" style={{ flex: 1, flexDirection: "column", gap: 12 }}>
                     <Text>{`Purchasing ${handrailName}`}</Text>
                     <View style={{ width: "100%", height: StyleSheet.hairlineWidth, backgroundColor: `${themeColors.b_color}` }}></View>
-                    <HandrailForm handrailKey={handrailName} setOpen={setOpen} withBase={true} handleCancel={handleCancel} addToBase={addToBase} />
+                    <HandrailForm handrailKey={handrailName} setOpen={setOpen} withBase={true} handleCancel={handleCancel} addToBase={addToBase} defaultValues={defaultValues} />
                 </View>
             </Sheet.Frame>
         </Sheet>

@@ -168,7 +168,7 @@ export function createAceProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["ACE"].shape.ID,
         base: createAceBaseProtocol("ACE"),
-        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(undefined)
     })
 }
 

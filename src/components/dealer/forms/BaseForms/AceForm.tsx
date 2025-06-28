@@ -14,6 +14,7 @@ import { HandrailSelect } from "../../../../lib/HandrailSelect";
 import { HandrailFormSheet } from "./HandrailFormSheet";
 import { Handrail } from "../../../../types/product/accessories";
 import { SelectAnchorSize } from "../../../../lib/AnchorSizeSelect";
+import { Edit3 } from "@tamagui/lucide-icons";
 
 export const AceForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
@@ -25,6 +26,7 @@ export const AceForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
     const [hasHandrail, setHasHandrial] = useState<boolean>(false)
     const [openHandrailForm, setOpenHandrailForm] = useState<boolean>(false)
     const [openHandrailSelect, setOpenHandrailSelect] = useState<boolean>(false)
+    const [editHandrailForm, setEditHandrailForm] = useState<boolean>(false)
 
     const {
         control,
@@ -35,7 +37,12 @@ export const AceForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
     } = useForm<Ace>({
         resolver: zodResolver(createAceProtocol(handrailKey)),
         mode: "onBlur",
+        defaultValues: {
+            handrail: null
+        }
     })
+
+    const handrail = watch("handrail")
 
     useEffect(() => {
         const color = watch("base.finish.color")
@@ -59,9 +66,8 @@ export const AceForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
         setValue("base.endCap.baseProfileID", watch("baseProfileID"))
         setValue("base.endCap.finish.color", watch("base.finish.color"))
         setValue("base.endCap.finish.code", watch("base.finish.code"))
-        setValue("handrail", null)
         console.log("reached end of useEffect", watch())
-    }, [watch("base.quantity")])
+    }, [watch("base.quantity"), watch("base.finish.color")])
 
     useEffect(() => {
         console.log("Errors:", errors);
@@ -86,7 +92,7 @@ export const AceForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
         setHandrailKey((prev) => prev = handrailName)
         setTimeout(() => {
             setOpenHandrailForm(!openHandrailForm)
-        }, 100)
+        }, 10)
     }
 
     const onSubmit: SubmitHandler<Ace> = async (data) => {
@@ -328,24 +334,33 @@ export const AceForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
                             )}
                         </XStack>
                     </YStack>
-                    <XStack width={"49%"} style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-                        <Text style={{ fontSize: 14, fontWeight: "bold" }}>Handrail</Text>
-                        <Switch
-                            themeInverse
-                            size="$1"
-                            checked={hasHandrail}
-                            onCheckedChange={async (checked) => {
-                                setHasHandrial(prev => !prev)
-                                if (checked) {
-                                    setOpenHandrailSelect(prev => !prev)
-                                }
-                                if (!checked) {
-                                    setHandrailToNull()
-                                }
-                            }}
-                        >
-                            <Switch.Thumb animation="quicker" />
-                        </Switch>
+                    <XStack width={"77%"} style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 20 }}>
+                        <Text flex={1} style={{ fontSize: 14, fontWeight: "bold" }}>Handrail</Text>
+                        <XStack flex={1} style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 20 }}>
+                            <Switch
+                                themeInverse
+                                size="$1"
+                                checked={hasHandrail}
+                                onCheckedChange={async (checked) => {
+                                    setHasHandrial(prev => !prev)
+                                    if (checked) {
+                                        setOpenHandrailSelect(prev => !prev)
+                                    }
+                                    if (!checked) {
+                                        setHandrailToNull()
+                                    }
+                                }}
+                            >
+                                <Switch.Thumb animation="quicker" />
+                            </Switch>
+                            {
+                                watch("handrail") !== null && (
+                                    <XStack gap={"$2"} style={{ alignSelf: "flex-end" }}>
+                                        <Button size={"$1.5"} style={{ alignSelf: "flex-end" }} circular themeInverse icon={() => <Edit3 size={14} />} onPress={() => setEditHandrailForm(prev => !prev)} />
+                                    </XStack>
+                                )
+                            }
+                        </XStack>
                     </XStack>
                 </ScrollView>
                 <XStack gap={"$2"} style={{ alignSelf: "flex-end" }}>
@@ -354,9 +369,8 @@ export const AceForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
                 </XStack>
             </YStack >
             {(openHandrailForm && handrailKey) && <HandrailFormSheet open={openHandrailForm} setOpen={setOpenHandrailForm} handrailName={handrailKey} handleCancel={handleCancel} addToBase={addToBase} />}
-            {openHandrailSelect && (
-                <HandrailSelect open={openHandrailSelect} setOpen={setOpenHandrailSelect} openAccessorySheet={handleHandrailFormSheet} />
-            )}
+            {openHandrailSelect && <HandrailSelect open={openHandrailSelect} setOpen={setOpenHandrailSelect} openAccessorySheet={handleHandrailFormSheet} />}
+            {(editHandrailForm && handrailKey) && <HandrailFormSheet open={editHandrailForm} setOpen={setEditHandrailForm} handrailName={handrailKey} addToBase={addToBase} defaultValues={watch("handrail")!} />}
         </>
     )
 }
