@@ -47,7 +47,6 @@ export const QuantityInput = ({
         size="$2"
         pt={0}
         pb={0}
-        defaultValue={"0"}
         inputMode="numeric"
         onBlur={onBlur}
         placeholderTextColor={themeColors.ph_color}

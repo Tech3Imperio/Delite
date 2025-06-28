@@ -2,14 +2,14 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Input, XStack, YStack, Text, Button, View } from "tamagui";
 import { useColorScheme } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useThemeColors } from "../../../store/themeColors";
-import { Corner, createCornerProtocol, createWallBracketProtocol, WallBracket } from "../../../types/product/accessories";
-import { SelectDemo } from "../../../lib/Select";
+import { useThemeColors } from "../../../../store/themeColors";
+import { Corner, createCornerProtocol, createWallBracketProtocol, WallBracket } from "../../../../types/product/accessories";
+import { SelectDemo } from "../../../../lib/Select";
 import { useEffect } from "react";
-import { getFinishCode } from "../../../utils/dealer/getFinishCode";
-import { QuantityInput } from "../../../lib/QuantityInput";
-import { HandrailName, HandrailType } from "../../../types/product/common";
-import { handrailValues } from "../../../lib/HandrailSelect";
+import { getFinishCode } from "../../../../utils/dealer/getFinishCode";
+import { QuantityInput } from "../../../../lib/QuantityInput";
+import { HandrailName, HandrailType } from "../../../../types/product/common";
+import { handrailValues } from "../../../../lib/HandrailSelect";
 export function WallBracketForm<K extends keyof HandrailName>({ handrailKey, setOpen }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
   console.log("In Wall Bracket form")
   const theme = useColorScheme()
@@ -101,6 +101,7 @@ export function WallBracketForm<K extends keyof HandrailName>({ handrailKey, set
               rules={{
                 maxLength: 100,
               }}
+              defaultValue={0}
               render={({ field: { onChange, onBlur, value } }) => (
                 <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
               )}

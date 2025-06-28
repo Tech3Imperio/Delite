@@ -1,8 +1,8 @@
-import { Ace, createAceProtocol, createDotProtocol, createLuxProtocol, createMicroProtocol, createMiniProtocol, createProProtocol, createSemiMiniProtocol, createSemiProProtocol, createSemiSmartProtocol, createSmartProtocol, createSpigotBaseProtocol, createSpigotProtocol, Dot, Lux, Micro, Mini, Pro, SemiMini, SemiPro, SemiSmart, Smart, Spigot } from "./base";
-import { Anchor, BaseEndCap, Corner, Cover, EPDMRubber, HandrailEndCap, Joiner, ModularBend, WallBracket, Handrail, CoverProtocol, createHandrailEndCapProtocol, createBaseEndCapProtocol, createWallBracketProtocol, createCornerProtocol, createJoinerProtocol, createModularBendProtocol, createEPDMRubberprotocol, createAccessoriesProtocol, createHandRailProtocol, createAnchorProtocol } from "./accessories";
+import { Ace, createAceProtocol, createDotProtocol, createLuxProtocol, createMicroProtocol, createMiniProtocol, createProProtocol, createSemiMiniProtocol, createSemiProProtocol, createSemiSmartProtocol, createSmartProtocol, createSpigotProtocol, Dot, Lux, Micro, Mini, Pro, SemiMini, SemiPro, SemiSmart, Smart, Spigot } from "./base";
+import { CoverProtocol, createHandrailEndCapProtocol, createBaseEndCapProtocol, createWallBracketProtocol, createCornerProtocol, createJoinerProtocol, createModularBendProtocol, createEPDMRubberprotocol, createAccessoriesProtocol, createHandRailProtocol, createAnchorProtocol } from "./accessories";
 import { BaseName, HandrailName, ModularBendHandrailName } from "./common";
 import { z } from "zod"
-type BaseProfileVariations = (Ace<keyof HandrailName> | Pro<keyof HandrailName> | Smart<keyof HandrailName> | Mini<keyof HandrailName> | SemiPro<keyof HandrailName> | SemiMini<keyof HandrailName> | SemiSmart<keyof HandrailName> | Lux<keyof HandrailName> | Spigot<keyof HandrailName> | Dot<keyof HandrailName> | Micro<keyof HandrailName>)[]
+type BaseProfileVariations = (Ace | Pro<keyof HandrailName> | Smart<keyof HandrailName> | Mini<keyof HandrailName> | SemiPro<keyof HandrailName> | SemiMini<keyof HandrailName> | SemiSmart<keyof HandrailName> | Lux<keyof HandrailName> | Spigot<keyof HandrailName> | Dot<keyof HandrailName> | Micro<keyof HandrailName>)[]
 
 const handrailKeys: (keyof HandrailName)[] = [
     "SLEEK12", "SLEEK17", "SLEEK21", "SQUARE40", "SQUARE50",

@@ -7,8 +7,7 @@ import { HandrailSelect } from '../../../lib/HandrailSelect';
 import { BaseName, HandrailName } from '../../../types/product/common';
 import { Baseselect } from '../../../lib/BaseSelect';
 import { ModularBendHandrailSelect } from '../../../lib/ModularBendHandrailSelect';
-import { AccessoryCode } from '../forms/AccessoryForms';
-
+import { AccessoryCode } from '../forms/AccessoryForms/AccessoryForms';
 
 export type Accessory = {
     name: string;

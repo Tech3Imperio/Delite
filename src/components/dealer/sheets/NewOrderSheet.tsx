@@ -2,10 +2,12 @@ import { useState } from "react"
 import { useColorScheme } from "react-native"
 import { Sheet } from "tamagui"
 import { useThemeColors } from "../../../store/themeColors"
-import { CoverForm } from "../forms/CoverForm"
+import { CoverForm } from "../forms/AccessoryForms/CoverForm"
+import { BaseName } from "../../../types/product/common"
+import { AceForm } from "../forms/BaseForms/AceForm"
 
 
-export const NewOrderSheet = ({ open, setOpen }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+export const NewOrderSheet = ({ open, setOpen, baseKey }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, baseKey: keyof BaseName }) => {
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     const [position, setPosition] = useState<number>(0)
@@ -28,7 +30,7 @@ export const NewOrderSheet = ({ open, setOpen }: { open: boolean, setOpen: React
                 enterStyle={{ opacity: 0 }}
                 exitStyle={{ opacity: 0 }} />
             <Sheet.Handle style={{ backgroundColor: themeColors.s_color }} />
-            <Sheet.Frame style={{ backgroundColor: themeColors.s_color, padding: 20 }}><CoverForm /></Sheet.Frame>
+            <Sheet.Frame style={{ backgroundColor: themeColors.s_color, padding: 20 }}><AceForm setOpen={setOpen} /></Sheet.Frame>
         </Sheet>
     )
 }

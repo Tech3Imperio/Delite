@@ -5,7 +5,7 @@ import { useThemeColors } from "../../../store/themeColors"
 import { BaseName, HandrailName, ModularBendHandrailName } from "../../../types/product/common"
 import { StyleSheet } from "react-native"
 import { Accessory } from "../cards/AccessoriesCard"
-import { BaseAccessoryCode, baseAccessoryForms, HandrailAccessoryCode, handrailAccessoryForms } from "../forms/AccessoryForms"
+import { BaseAccessoryCode, baseAccessoryForms, HandrailAccessoryCode, handrailAccessoryForms } from "../forms/AccessoryForms/AccessoryForms"
 
 
 export const NewAccessorySheet = ({ open, setOpen, accessory, code, handrailName, baseName, forBase }: { open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, accessory: Accessory, code: HandrailAccessoryCode | BaseAccessoryCode, handrailName: keyof HandrailName | null, baseName: keyof BaseName | null, forBase: boolean }) => {

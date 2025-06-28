@@ -8,11 +8,23 @@ import { Wrapper } from '../../lib/Wrapper';
 import { Button } from 'tamagui';
 import { Plus } from '@tamagui/lucide-icons';
 import { NewOrderSheet } from '../../components/dealer/sheets/NewOrderSheet';
+import { Baseselect } from '../../lib/BaseSelect';
+import { BaseName } from '../../types/product/common';
 type DealerDashboardParamProp = StaticScreenProps<{}>
 const DealerDashboard = ({ route }: DealerDashboardParamProp) => {
     const navigation = useNavigation<BottomTabNavigationProp<ReactNavigation.DealerParamsList>>()
     const { signOut } = useContext(AuthContext)
-    const [open, setOpen] = useState<boolean>(false)
+    const [openBaseList, setOpenBaseList] = useState<boolean>(false)
+    const [base, setBase] = useState<keyof BaseName | null>(null)
+    const [openBaseSheet, setOpenBaseSheet] = useState<boolean>(false)
+
+    const handleBaseSheet = (baseName: keyof BaseName) => {
+        console.log("reached handleSheet", baseName)
+        setBase((prev) => prev = baseName)
+        setTimeout(() => {
+            setOpenBaseSheet(true)
+        }, 100)
+    }
     return (
         <Wrapper>
             <View
@@ -43,16 +55,17 @@ const DealerDashboard = ({ route }: DealerDashboardParamProp) => {
                 }}
                 hoverStyle={{ bg: "$blue9" }}
                 pressStyle={{ bg: "darkgrey" }}
-                onPress={() => setOpen((open) => !open)}
+                onPress={() => setOpenBaseList((open) => !open)}
             >
                 <XStack style={{ alignItems: "center" }} gap="$1">
                     <Plus size={16} />
                     <Text>Order</Text>
                 </XStack>
             </Button>
-            {
-                open === true ? <NewOrderSheet setOpen={setOpen} open={open} /> : <></>
-            }
+            {openBaseList && (
+                <Baseselect open={openBaseList} setOpen={setOpenBaseList} openAccessorySheet={handleBaseSheet} />
+            )}
+            {base && openBaseSheet ? <NewOrderSheet open={openBaseSheet} setOpen={setOpenBaseSheet} baseKey={base} /> : <></>}
         </Wrapper>
     );
 };

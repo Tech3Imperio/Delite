@@ -2,16 +2,16 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Input, XStack, YStack, Text, Button, View, ScrollView } from "tamagui";
 import { useColorScheme } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useThemeColors } from "../../../store/themeColors";
-import { createHandRailProtocol, Handrail } from "../../../types/product/accessories";
-import { SelectDemo } from "../../../lib/Select";
+import { useThemeColors } from "../../../../store/themeColors";
+import { createHandRailProtocol, Handrail } from "../../../../types/product/accessories";
+import { SelectDemo } from "../../../../lib/Select";
 import { useEffect } from "react";
-import { getFinishCode } from "../../../utils/dealer/getFinishCode";
-import { QuantityInput } from "../../../lib/QuantityInput";
-import { HandrailName, HandrailType } from "../../../types/product/common";
-import { handrailValues } from "../../../lib/HandrailSelect";
-import { SelectGlassThickness } from "../../../lib/SelectGlassThickness";
-export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpen }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+import { getFinishCode } from "../../../../utils/dealer/getFinishCode";
+import { QuantityInput } from "../../../../lib/QuantityInput";
+import { HandrailName, HandrailType } from "../../../../types/product/common";
+import { handrailValues } from "../../../../lib/HandrailSelect";
+import { SelectGlassThickness } from "../../../../lib/SelectGlassThickness";
+export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpen, withBase, handleCancel, addToBase }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>>, withBase?: boolean, handleCancel?: () => void, addToBase?: (data: Handrail<keyof HandrailName>) => void }) {
     console.log("In Handrail form")
     const isModularBend = handrailKey === "ROUND50" || handrailKey === "SQUARE40" || handrailKey === "SQUARE50"
     const theme = useColorScheme()
@@ -66,6 +66,10 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
 
     const onSubmit: SubmitHandler<Handrail<keyof HandrailName>> = async (data) => {
         console.log("Data from Handrail", data)
+        if (withBase && addToBase) {
+            addToBase(data)
+            setOpen(prev => !prev)
+        }
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",
@@ -87,6 +91,13 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
         //     }
         // }
     };
+
+    const handleCancellation = () => {
+        if (withBase && handleCancel) {
+            handleCancel()
+        }
+        setOpen(prev => !prev)
+    }
 
     return (
         <>
@@ -131,6 +142,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                         rules={{
                                             maxLength: 100,
                                         }}
+                                        defaultValue={0}
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                         )}
@@ -149,6 +161,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                         rules={{
                                             maxLength: 100,
                                         }}
+                                        defaultValue={0}
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                         )}
@@ -172,6 +185,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                         rules={{
                                             maxLength: 100,
                                         }}
+                                        defaultValue={0}
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                         )}
@@ -190,6 +204,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                         rules={{
                                             maxLength: 100,
                                         }}
+                                        defaultValue={0}
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                         )}
@@ -258,6 +273,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                         rules={{
                                             maxLength: 100,
                                         }}
+                                        defaultValue={0}
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                         )}
@@ -276,6 +292,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                         rules={{
                                             maxLength: 100,
                                         }}
+                                        defaultValue={0}
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                         )}
@@ -294,6 +311,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                         rules={{
                                             maxLength: 100,
                                         }}
+                                        defaultValue={0}
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                         )}
@@ -312,6 +330,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                         rules={{
                                             maxLength: 100,
                                         }}
+                                        defaultValue={0}
                                         render={({ field: { onChange, onBlur, value } }) => (
                                             <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                         )}
@@ -332,6 +351,7 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                                                 rules={{
                                                     maxLength: 100,
                                                 }}
+                                                defaultValue={0}
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                                                 )}
@@ -348,8 +368,8 @@ export function HandrailForm<K extends keyof HandrailName>({ handrailKey, setOpe
                     </YStack>
                 </ScrollView>
                 <XStack gap={"$2"} style={{ alignSelf: "flex-end" }}>
-                    <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={100} variant="outlined" onPress={() => setOpen(prev => !prev)}>Cancel</Button>
-                    <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={100} themeInverse onPress={handleSubmit(onSubmit)}>Place Order</Button>
+                    <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={120} variant="outlined" onPress={handleCancellation}>Cancel</Button>
+                    <Button size={"$3"} style={{ alignSelf: "flex-end" }} width={120} themeInverse onPress={handleSubmit(onSubmit)}>{withBase ? "Add Handrail" : "Place Order"}</Button>
                 </XStack>
             </YStack>
         </>

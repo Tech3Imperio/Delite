@@ -2,14 +2,16 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Input, XStack, YStack, Text, Button, View } from "tamagui";
 import { useColorScheme } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useThemeColors } from "../../../store/themeColors";
-import { Cover, CoverProtocol } from "../../../types/product/accessories";
-import { SelectDemo } from "../../../lib/Select";
+import { useThemeColors } from "../../../../store/themeColors";
+import { createJoinerProtocol, Joiner } from "../../../../types/product/accessories";
+import { SelectDemo } from "../../../../lib/Select";
 import { useEffect } from "react";
-import { getFinishCode } from "../../../utils/dealer/getFinishCode";
-import { QuantityInput } from "../../../lib/QuantityInput";
-export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
-    console.log("In cover form")
+import { getFinishCode } from "../../../../utils/dealer/getFinishCode";
+import { QuantityInput } from "../../../../lib/QuantityInput";
+import { HandrailName, HandrailType } from "../../../../types/product/common";
+import { handrailValues } from "../../../../lib/HandrailSelect";
+export function JoinerForm<K extends keyof HandrailName>({ handrailKey, setOpen }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+    console.log("In Joiner form")
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     const {
@@ -18,8 +20,8 @@ export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
         watch,
         setValue,
         formState: { errors },
-    } = useForm<Cover>({
-        resolver: zodResolver(CoverProtocol),
+    } = useForm<Joiner<keyof HandrailName>>({
+        resolver: zodResolver(createJoinerProtocol(handrailKey)),
         mode: "onBlur",
     })
 
@@ -33,8 +35,15 @@ export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
         }
     }, [watch("finish.color")])
 
-    const onSubmit: SubmitHandler<Cover> = async (data) => {
-        console.log("Data from Cover", data)
+    useEffect(() => {
+        setValue("handrailType", handrailValue.name as Joiner<K>["handrailType"]);
+        setValue("handrailCode", handrailValue.code as Joiner<K>["handrailCode"]);
+    }, []);
+
+    const handrailValue: HandrailType<typeof handrailKey> = handrailValues[handrailKey];
+
+    const onSubmit: SubmitHandler<Joiner<keyof HandrailName>> = async (data) => {
+        console.log("Data from Joiner", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",
@@ -60,46 +69,48 @@ export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
     return (
         <>
             <YStack id="Test" flex={1} style={{ alignItems: "start", justifyContent: "space-between", gap: 16 }}>
-                <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16 }}>
-                    <Text style={{ fontSize: 14, fontWeight: "bold" }}>Quantity</Text>
-                    <View style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                        <XStack style={{ justifyContent: "flex-start", alignItems: "center", gap: 24 }}>
-                            <Text style={{ fontSize: 14 }}>For 12mm</Text>
-                            <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                                <Controller
-                                    control={control}
-                                    rules={{
-                                        maxLength: 100,
-                                    }}
-                                    render={({ field: { onChange, onBlur, value } }) => (
-                                        <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
-                                    )}
-                                    name="coverLength.0"
-                                />
-                                {errors.coverLength?.[0] && (
-                                    <Text style={{ color: "red", fontSize: 12, }}>{errors.coverLength[0].message}</Text>
-                                )}
-                            </YStack>
-                        </XStack>
-                        <XStack style={{ justifyContent: "flex-start", alignItems: "center", gap: 24 }}>
-                            <Text style={{ fontSize: 14 }}>For 15mm</Text>
-                            <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                                <Controller
-                                    control={control}
-                                    rules={{
-                                        maxLength: 100,
-                                    }}
-                                    render={({ field: { onChange, onBlur, value } }) => (
-                                        <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
-                                    )}
-                                    name="coverLength.1"
-                                />
-                                {errors.coverLength?.[1] && (
-                                    <Text style={{ color: "red", fontSize: 12 }}>{errors.coverLength[1].message}</Text>
-                                )}
-                            </YStack>
-                        </XStack>
-                    </View>
+                <YStack width={"100%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16, }}>
+                    <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
+                        <Text style={{ fontSize: 14 }}>Handrail Name</Text>
+                        <Input
+                            defaultValue={handrailValue.name}
+                            editable={false}
+                            size="$3"
+                            pt={0}
+                            pb={0}
+                            placeholder="Handrail Code"
+                            placeholderTextColor={themeColors.ph_color}
+                        />
+                    </YStack>
+                    <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
+                        <Text style={{ fontSize: 14 }}>Handrail Code</Text>
+                        <Input
+                            defaultValue={handrailValue.code}
+                            editable={false}
+                            size="$3"
+                            pt={0}
+                            pb={0}
+                            placeholder="Handrail Code"
+                            placeholderTextColor={themeColors.ph_color}
+                        />
+                    </YStack>
+                    <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
+                        <Text style={{ fontSize: 14, fontWeight: "bold" }}>Quantity</Text>
+                        <Controller
+                            control={control}
+                            rules={{
+                                maxLength: 100,
+                            }}
+                            defaultValue={0}
+                            render={({ field: { onChange, onBlur, value } }) => (
+                                <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                            )}
+                            name="joinerQuantity"
+                        />
+                        {errors.joinerQuantity && (
+                            <Text style={{ color: "red", fontSize: 12, }}>{errors.joinerQuantity.message}</Text>
+                        )}
+                    </YStack>
                     <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
                         <XStack style={{ display: "flex", flexDirection: "row", alignItems: "flex-end", justifyContent: "flex-start", gap: 16 }}>
                             <Controller

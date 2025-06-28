@@ -1,10 +1,9 @@
 import { Anchor, Cover, BaseEndCap, CoverProtocol, createBaseEndCapProtocol, createAnchorProtocol, createHandRailProtocol } from "./accessories";
 import { BaseName, BaseType, DotFinishCode, DotFinishName, FinishName, FinishCode, HandrailName, FinishNameProtocol, FinishCodeProtocol, DotFinishNameProtocol, DotFinishCodeProtocol, BaseNameProtocol, HandrailNameProtocol } from "./common";
-import { Handrail } from "./accessories";
 import { z } from 'zod'
 
 type AceBaseType<T extends keyof BaseName> = {
-    size: number;
+    blockSize: [number, number, number, number];
     quantity: number;
     finish: { color: FinishName, code: FinishCode };
     cover: Cover
@@ -22,7 +21,7 @@ export function createAceBaseProtocol<T extends keyof BaseName>(baseKey: T) {
                 message: "Invalid finish code",
             }),
         }, { required_error: "Finish is required" }),
-        size: z.number({ required_error: "Size is required" }),
+        blockSize: z.tuple([z.number({ required_error: "Q1 is required" }), z.number({ required_error: "Q2 is required" }), z.number({ required_error: "Q3 is required" }), z.number({ required_error: "Q4 is required" })], { required_error: "Quantity is required is required" }),
         quantity: z.number({ required_error: "Quantity is required" }),
         cover: CoverProtocol,
         endCap: createBaseEndCapProtocol(baseKey),
@@ -165,15 +164,15 @@ export function createMicroBaseProtocol<T extends keyof BaseName>(baseKey: T) {
 //     handrail: Handrail<K>
 // }
 
-export function createAceProtocol<K extends keyof HandrailName>(handrailKey: K) {
+export function createAceProtocol(handrailKey: keyof HandrailName | null) {
     return z.object({
         baseProfileID: BaseNameProtocol.shape["ACE"].shape.ID,
-        base: z.array(createAceBaseProtocol("ACE")),
-        handrail: createHandRailProtocol(handrailKey)
+        base: createAceBaseProtocol("ACE"),
+        handrail: handrailKey ? createHandRailProtocol(handrailKey).nullable() : z.literal(null)
     })
 }
 
-export type Ace<K extends keyof HandrailName> = z.infer<ReturnType<typeof createAceProtocol<K>>>;
+export type Ace = z.infer<ReturnType<typeof createAceProtocol>>
 
 // export type Pro<K extends keyof HandrailName> = {
 //     baseProfileID: BaseType<"PRO">["ID"];

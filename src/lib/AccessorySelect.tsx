@@ -3,7 +3,7 @@ import { FlatList, useColorScheme } from "react-native"
 import { Sheet, YStack, Button } from "tamagui"
 import { useThemeColors } from "../store/themeColors"
 import { Accessory } from "../components/dealer/cards/AccessoriesCard"
-import { AccessoryCode } from "../components/dealer/forms/AccessoryForms"
+import { AccessoryCode } from "../components/dealer/forms/AccessoryForms/AccessoryForms"
 const accessories: Accessory[] = [
     {
         created_at: "2025-06-06T06:48:37.098711+00:00",

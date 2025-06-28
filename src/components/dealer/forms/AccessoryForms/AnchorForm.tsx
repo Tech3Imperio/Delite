@@ -2,16 +2,16 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { Input, XStack, YStack, Text, Button } from 'tamagui';
 import { useColorScheme } from 'react-native';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useThemeColors } from '../../../store/themeColors';
+import { useThemeColors } from '../../../../store/themeColors';
 import {
     Anchor,
     createAnchorProtocol,
-} from '../../../types/product/accessories';
+} from '../../../../types/product/accessories';
 import { useEffect } from 'react';
-import { QuantityInput } from '../../../lib/QuantityInput';
-import { BaseName, BaseType } from '../../../types/product/common';
-import { baseValues } from '../../../lib/BaseSelect';
-import { SelectAnchorSize } from '../../../lib/AnchorSizeSelect';
+import { QuantityInput } from '../../../../lib/QuantityInput';
+import { BaseName, BaseType } from '../../../../types/product/common';
+import { baseValues } from '../../../../lib/BaseSelect';
+import { SelectAnchorSize } from '../../../../lib/AnchorSizeSelect';
 
 export const AnchorForm = ({
     baseKey,
@@ -85,6 +85,7 @@ export const AnchorForm = ({
                         <Controller
                             control={control}
                             name="quantity"
+                            defaultValue={0}
                             render={({ field: { onChange, value, onBlur } }) => (
                                 <QuantityInput
                                     value={value}

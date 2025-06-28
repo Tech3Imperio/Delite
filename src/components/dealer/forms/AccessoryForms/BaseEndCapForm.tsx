@@ -2,17 +2,17 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { Input, XStack, YStack, Text, Button } from 'tamagui';
 import { useColorScheme } from 'react-native';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useThemeColors } from '../../../store/themeColors';
+import { useThemeColors } from '../../../../store/themeColors';
 import {
   BaseEndCap,
   createBaseEndCapProtocol,
-} from '../../../types/product/accessories';
-import { SelectDemo } from '../../../lib/Select';
+} from '../../../../types/product/accessories';
+import { SelectDemo } from '../../../../lib/Select';
 import { useEffect } from 'react';
-import { getFinishCode } from '../../../utils/dealer/getFinishCode';
-import { QuantityInput } from '../../../lib/QuantityInput';
-import { BaseName, BaseType } from '../../../types/product/common';
-import { baseValues } from '../../../lib/BaseSelect';
+import { getFinishCode } from '../../../../utils/dealer/getFinishCode';
+import { QuantityInput } from '../../../../lib/QuantityInput';
+import { BaseName, BaseType } from '../../../../types/product/common';
+import { baseValues } from '../../../../lib/BaseSelect';
 
 export const BaseEndCapForm = ({
   baseKey,
@@ -92,6 +92,7 @@ export const BaseEndCapForm = ({
           <Controller
             control={control}
             name="endCapLeftQuantity"
+            defaultValue={0}
             render={({ field: { onChange, value, onBlur } }) => (
               <QuantityInput
                 value={value}
@@ -113,6 +114,7 @@ export const BaseEndCapForm = ({
           <Controller
             control={control}
             name="endCapRightQuantity"
+            defaultValue={0}
             render={({ field: { onChange, value, onBlur } }) => (
               <QuantityInput
                 value={value}

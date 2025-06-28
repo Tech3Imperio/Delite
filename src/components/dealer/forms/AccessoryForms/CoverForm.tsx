@@ -2,16 +2,14 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Input, XStack, YStack, Text, Button, View } from "tamagui";
 import { useColorScheme } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useThemeColors } from "../../../store/themeColors";
-import { Corner, createCornerProtocol } from "../../../types/product/accessories";
-import { SelectDemo } from "../../../lib/Select";
+import { useThemeColors } from "../../../../store/themeColors";
+import { Cover, CoverProtocol } from "../../../../types/product/accessories";
+import { SelectDemo } from "../../../../lib/Select";
 import { useEffect } from "react";
-import { getFinishCode } from "../../../utils/dealer/getFinishCode";
-import { QuantityInput } from "../../../lib/QuantityInput";
-import { HandrailName, HandrailType } from "../../../types/product/common";
-import { handrailValues } from "../../../lib/HandrailSelect";
-export function CornerForm<K extends keyof HandrailName>({ handrailKey, setOpen }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
-    console.log("In Corner Block form")
+import { getFinishCode } from "../../../../utils/dealer/getFinishCode";
+import { QuantityInput } from "../../../../lib/QuantityInput";
+export const CoverForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+    console.log("In cover form")
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     const {
@@ -20,8 +18,8 @@ export function CornerForm<K extends keyof HandrailName>({ handrailKey, setOpen 
         watch,
         setValue,
         formState: { errors },
-    } = useForm<Corner<keyof HandrailName>>({
-        resolver: zodResolver(createCornerProtocol(handrailKey)),
+    } = useForm<Cover>({
+        resolver: zodResolver(CoverProtocol),
         mode: "onBlur",
     })
 
@@ -35,15 +33,8 @@ export function CornerForm<K extends keyof HandrailName>({ handrailKey, setOpen 
         }
     }, [watch("finish.color")])
 
-    useEffect(() => {
-        setValue("handrailType", handrailValue.name as Corner<K>["handrailType"]);
-        setValue("handrailCode", handrailValue.code as Corner<K>["handrailCode"]);
-    }, []);
-
-    const handrailValue: HandrailType<typeof handrailKey> = handrailValues[handrailKey];
-
-    const onSubmit: SubmitHandler<Corner<keyof HandrailName>> = async (data) => {
-        console.log("Data from Corner", data)
+    const onSubmit: SubmitHandler<Cover> = async (data) => {
+        console.log("Data from Cover", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",
@@ -69,47 +60,48 @@ export function CornerForm<K extends keyof HandrailName>({ handrailKey, setOpen 
     return (
         <>
             <YStack id="Test" flex={1} style={{ alignItems: "start", justifyContent: "space-between", gap: 16 }}>
-                <YStack width={"100%"} style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16, }}>
-                    <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
-                        <Text style={{ fontSize: 14 }}>Handrail Name</Text>
-                        <Input
-                            defaultValue={handrailValue.name}
-                            editable={false}
-                            size="$3"
-                            pt={0}
-                            pb={0}
-                            placeholder="Handrail Code"
-                            placeholderTextColor={themeColors.ph_color}
-                        />
-                    </YStack>
-                    <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
-                        <Text style={{ fontSize: 14 }}>Handrail Code</Text>
-                        <Input
-                            defaultValue={handrailValue.code}
-                            editable={false}
-                            size="$3"
-                            pt={0}
-                            pb={0}
-                            placeholder="Handrail Code"
-                            placeholderTextColor={themeColors.ph_color}
-                        />
-                    </YStack>
-                    <YStack style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16 }}>
-                        <Text style={{ fontSize: 14, fontWeight: "bold" }}>Quantity</Text>
-                        <Controller
-                            control={control}
-                            rules={{
-                                maxLength: 100,
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
-                            )}
-                            name="cornerQuantity"
-                        />
-                        {errors.cornerQuantity && (
-                            <Text style={{ color: "red", fontSize: 12, }}>{errors.cornerQuantity.message}</Text>
-                        )}
-                    </YStack>
+                <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 16 }}>
+                    <Text style={{ fontSize: 14, fontWeight: "bold" }}>Quantity</Text>
+                    <View style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                        <XStack style={{ justifyContent: "flex-start", alignItems: "center", gap: 24 }}>
+                            <Text style={{ fontSize: 14 }}>For 12mm</Text>
+                            <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        maxLength: 100,
+                                    }}
+                                    defaultValue={0}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                    )}
+                                    name="coverLength.0"
+                                />
+                                {errors.coverLength?.[0] && (
+                                    <Text style={{ color: "red", fontSize: 12, }}>{errors.coverLength[0].message}</Text>
+                                )}
+                            </YStack>
+                        </XStack>
+                        <XStack style={{ justifyContent: "flex-start", alignItems: "center", gap: 24 }}>
+                            <Text style={{ fontSize: 14 }}>For 15mm</Text>
+                            <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        maxLength: 100,
+                                    }}
+                                    defaultValue={0}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
+                                    )}
+                                    name="coverLength.1"
+                                />
+                                {errors.coverLength?.[1] && (
+                                    <Text style={{ color: "red", fontSize: 12 }}>{errors.coverLength[1].message}</Text>
+                                )}
+                            </YStack>
+                        </XStack>
+                    </View>
                     <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
                         <XStack style={{ display: "flex", flexDirection: "row", alignItems: "flex-end", justifyContent: "flex-start", gap: 16 }}>
                             <Controller

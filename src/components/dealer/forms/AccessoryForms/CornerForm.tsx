@@ -2,16 +2,16 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { Input, XStack, YStack, Text, Button, View } from "tamagui";
 import { useColorScheme } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useThemeColors } from "../../../store/themeColors";
-import { createJoinerProtocol, Joiner } from "../../../types/product/accessories";
-import { SelectDemo } from "../../../lib/Select";
+import { useThemeColors } from "../../../../store/themeColors";
+import { Corner, createCornerProtocol } from "../../../../types/product/accessories";
+import { SelectDemo } from "../../../../lib/Select";
 import { useEffect } from "react";
-import { getFinishCode } from "../../../utils/dealer/getFinishCode";
-import { QuantityInput } from "../../../lib/QuantityInput";
-import { HandrailName, HandrailType } from "../../../types/product/common";
-import { handrailValues } from "../../../lib/HandrailSelect";
-export function JoinerForm<K extends keyof HandrailName>({ handrailKey, setOpen }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
-    console.log("In Joiner form")
+import { getFinishCode } from "../../../../utils/dealer/getFinishCode";
+import { QuantityInput } from "../../../../lib/QuantityInput";
+import { HandrailName, HandrailType } from "../../../../types/product/common";
+import { handrailValues } from "../../../../lib/HandrailSelect";
+export function CornerForm<K extends keyof HandrailName>({ handrailKey, setOpen }: { handrailKey: K, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+    console.log("In Corner Block form")
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
     const {
@@ -20,8 +20,8 @@ export function JoinerForm<K extends keyof HandrailName>({ handrailKey, setOpen 
         watch,
         setValue,
         formState: { errors },
-    } = useForm<Joiner<keyof HandrailName>>({
-        resolver: zodResolver(createJoinerProtocol(handrailKey)),
+    } = useForm<Corner<keyof HandrailName>>({
+        resolver: zodResolver(createCornerProtocol(handrailKey)),
         mode: "onBlur",
     })
 
@@ -36,14 +36,14 @@ export function JoinerForm<K extends keyof HandrailName>({ handrailKey, setOpen 
     }, [watch("finish.color")])
 
     useEffect(() => {
-        setValue("handrailType", handrailValue.name as Joiner<K>["handrailType"]);
-        setValue("handrailCode", handrailValue.code as Joiner<K>["handrailCode"]);
+        setValue("handrailType", handrailValue.name as Corner<K>["handrailType"]);
+        setValue("handrailCode", handrailValue.code as Corner<K>["handrailCode"]);
     }, []);
 
     const handrailValue: HandrailType<typeof handrailKey> = handrailValues[handrailKey];
 
-    const onSubmit: SubmitHandler<Joiner<keyof HandrailName>> = async (data) => {
-        console.log("Data from Joiner", data)
+    const onSubmit: SubmitHandler<Corner<keyof HandrailName>> = async (data) => {
+        console.log("Data from Corner", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",
@@ -101,13 +101,14 @@ export function JoinerForm<K extends keyof HandrailName>({ handrailKey, setOpen 
                             rules={{
                                 maxLength: 100,
                             }}
+                            defaultValue={0}
                             render={({ field: { onChange, onBlur, value } }) => (
                                 <QuantityInput value={value} onChange={onChange} onBlur={onBlur} />
                             )}
-                            name="joinerQuantity"
+                            name="cornerQuantity"
                         />
-                        {errors.joinerQuantity && (
-                            <Text style={{ color: "red", fontSize: 12, }}>{errors.joinerQuantity.message}</Text>
+                        {errors.cornerQuantity && (
+                            <Text style={{ color: "red", fontSize: 12, }}>{errors.cornerQuantity.message}</Text>
                         )}
                     </YStack>
                     <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>

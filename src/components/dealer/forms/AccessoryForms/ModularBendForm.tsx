@@ -2,20 +2,20 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { Input, XStack, YStack, Text, Button } from 'tamagui';
 import { useColorScheme } from 'react-native';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useThemeColors } from '../../../store/themeColors';
+import { useThemeColors } from '../../../../store/themeColors';
 import {
   ModularBend,
   createModularBendProtocol,
-} from '../../../types/product/accessories';
-import { SelectDemo } from '../../../lib/Select';
+} from '../../../../types/product/accessories';
+import { SelectDemo } from '../../../../lib/Select';
 import { useEffect } from 'react';
-import { getFinishCode } from '../../../utils/dealer/getFinishCode';
-import { QuantityInput } from '../../../lib/QuantityInput';
+import { getFinishCode } from '../../../../utils/dealer/getFinishCode';
+import { QuantityInput } from '../../../../lib/QuantityInput';
 import {
   ModularBendHandrailName,
   ModularBendHandrailType,
-} from '../../../types/product/common';
-import { ModularBendHandrailValues } from '../../../lib/ModularBendHandrailSelect';
+} from '../../../../types/product/common';
+import { ModularBendHandrailValues } from '../../../../lib/ModularBendHandrailSelect';
 
 export function ModularBendForm<K extends keyof ModularBendHandrailName>({
   handrailKey,
@@ -100,6 +100,7 @@ export function ModularBendForm<K extends keyof ModularBendHandrailName>({
           <Controller
             control={control}
             name="modularBendQuantity"
+            defaultValue={0}
             render={({ field: { onChange, onBlur, value } }) => (
               <QuantityInput
                 value={value}
