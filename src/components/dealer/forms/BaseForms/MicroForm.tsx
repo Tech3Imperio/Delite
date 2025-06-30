@@ -18,7 +18,7 @@ import { Edit3 } from "@tamagui/lucide-icons";
 
 export const MicroForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
-    console.log("In Semi Pro form")
+    console.log("In Micro form")
 
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
@@ -60,6 +60,7 @@ export const MicroForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
         setValue("base.anchor.anchorID", "NA")
         setValue("base.anchor.anchorType", "NA")
         setValue("base.anchor.baseProfileID", "F40")
+        setValue("base.anchor.anchorSize", null)
         setValue("base.anchor.quantity", watch("base.quantity"))
         setValue("base.length", 12)
         console.log("reached end of useEffect", watch())
@@ -92,7 +93,7 @@ export const MicroForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
     }
 
     const onSubmit: SubmitHandler<Micro> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Micro", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",
@@ -170,21 +171,6 @@ export const MicroForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
                             <Text style={{ color: "red", fontSize: 12, }}>{errors.base.quantity.message}</Text>
                         )}
                     </XStack>
-                    <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
-                        <Controller
-                            control={control}
-                            rules={{
-                                maxLength: 100,
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <SelectAnchorSize onChange={onChange} onBlur={onBlur} value={value} />
-                            )}
-                            name="base.anchor.anchorSize"
-                        />
-                        {errors.base?.anchor?.anchorSize && (
-                            <Text style={{ color: "red", fontSize: 12 }}>{errors.base.anchor.anchorSize.message}</Text>
-                        )}
-                    </YStack>
                     <XStack width={"77%"} style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 20 }}>
                         <Text flex={1} style={{ fontSize: 14, fontWeight: "bold" }}>Handrail</Text>
                         <XStack flex={1} style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 20 }}>

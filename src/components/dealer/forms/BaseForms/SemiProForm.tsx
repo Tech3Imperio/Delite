@@ -91,7 +91,7 @@ export const SemiProForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStat
     }
 
     const onSubmit: SubmitHandler<SemiPro> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Semi Pro", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",

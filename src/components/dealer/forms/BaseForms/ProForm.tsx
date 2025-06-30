@@ -94,7 +94,7 @@ export const ProForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
     }
 
     const onSubmit: SubmitHandler<Pro> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Pro", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",

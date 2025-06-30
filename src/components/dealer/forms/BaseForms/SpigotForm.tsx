@@ -92,7 +92,7 @@ export const SpigotForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
     }
 
     const onSubmit: SubmitHandler<Spigot> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Spigot", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",
@@ -162,10 +162,10 @@ export const SpigotForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetState
                             render={({ field: { onChange, onBlur, value } }) => (
                                 <SelectSpigotSize onChange={onChange} onBlur={onBlur} value={value} />
                             )}
-                            name="base.anchor.anchorSize"
+                            name="base.size"
                         />
-                        {errors.base?.anchor?.anchorSize && (
-                            <Text style={{ color: "red", fontSize: 12 }}>{errors.base.anchor.anchorSize.message}</Text>
+                        {errors.base?.size && (
+                            <Text style={{ color: "red", fontSize: 12 }}>{errors.base.size.message}</Text>
                         )}
                     </YStack>
                     <XStack width={"70%"} style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 }}>

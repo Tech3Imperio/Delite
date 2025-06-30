@@ -18,7 +18,7 @@ import { Edit3 } from "@tamagui/lucide-icons";
 
 export const SemiMiniForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
-    console.log("In Semi Smart form")
+    console.log("In Semi Mini form")
 
     const theme = useColorScheme()
     const themeColors = useThemeColors((state) => theme === "light" ? state.light_colors : state.dark_colors)
@@ -91,7 +91,7 @@ export const SemiMiniForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetSta
     }
 
     const onSubmit: SubmitHandler<SemiMini> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Semi Mini", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",

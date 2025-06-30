@@ -106,7 +106,7 @@ export function createSpigotBaseProtocol<T extends keyof BaseName>(baseKey: T) {
 
 type DotBaseType<T extends keyof BaseName> = {
     grade: 304 | 316;
-    size: 50 | 38;
+    size: 50;
     quantity: number;
     finish: { color: DotFinishName, code: DotFinishCode };
     anchor: Anchor<T>
@@ -124,10 +124,7 @@ export function createDotBaseProtocol<T extends keyof BaseName>(baseKey: T) {
         }, { required_error: "Finish is required" }),
         quantity: z.number({ required_error: "Quantity is required" }),
         anchor: createAnchorProtocol(baseKey),
-        size: z.union([
-            z.literal(50),
-            z.literal(38),
-        ]),
+        size: z.literal(50),
         grade: z.union([
             z.literal(304),
             z.literal(316)

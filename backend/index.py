@@ -41,3 +41,10 @@ def tester():
 def getAccessories():
     accessories = supabase.table("accessories").select("*").execute()
     return accessories
+
+
+@app.get("/baseProfiles")
+def getAccessories():
+    baseProfiles = supabase.table("base_profiles").select(
+        "created_at, image, name, code, keyName").execute()
+    return baseProfiles

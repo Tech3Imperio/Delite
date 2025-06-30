@@ -94,7 +94,7 @@ export const SmartForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateA
     }
 
     const onSubmit: SubmitHandler<Smart> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Smart", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",

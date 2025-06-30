@@ -91,7 +91,7 @@ export const LuxForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
     }
 
     const onSubmit: SubmitHandler<Lux> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Lux", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",

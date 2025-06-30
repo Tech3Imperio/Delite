@@ -14,6 +14,7 @@ import { HandrailFormSheet } from "./HandrailFormSheet";
 import { Handrail } from "../../../../types/product/accessories";
 import { Edit3 } from "@tamagui/lucide-icons";
 import { SelectDotFinish } from "../../../../lib/DotFinishSelect";
+import { SelectDotGrade } from "../../../../lib/DotGradeSelect";
 
 export const DotForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
@@ -41,8 +42,6 @@ export const DotForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
         }
     })
 
-    const handrail = watch("handrail")
-
     useEffect(() => {
         const color = watch("base.finish.color")
         const base = watch()
@@ -50,6 +49,7 @@ export const DotForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
         const code = color !== undefined && getDotFinishCode(color)
         console.log("In useEffect", code)
         if (code) {
+            console.log(code)
             setValue("base.finish.code", code) // or a mapping function if needed
         }
     }, [watch("base.finish.color")])
@@ -61,6 +61,7 @@ export const DotForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
         setValue("base.anchor.anchorSize", 100)
         setValue("base.anchor.baseProfileID", "E50")
         setValue("base.anchor.quantity", watch("base.quantity"))
+        setValue("base.size", 50)
         console.log("reached end of useEffect", watch())
     }, [watch("base.quantity"), watch("base.finish.color")])
 
@@ -91,7 +92,7 @@ export const DotForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
     }
 
     const onSubmit: SubmitHandler<Dot> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Dot", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",
@@ -149,6 +150,23 @@ export const DotForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAct
                             />
                             {errors.base?.finish?.code && (
                                 <Text style={{ color: "red", fontSize: 12 }}>{errors.base.finish.code.message}</Text>
+                            )}
+                        </XStack>
+                    </YStack>
+                    <YStack style={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "flex-start", gap: 8 }}>
+                        <XStack style={{ display: "flex", flexDirection: "row", alignItems: "flex-end", justifyContent: "flex-start", gap: 16 }}>
+                            <Controller
+                                control={control}
+                                rules={{
+                                    maxLength: 100,
+                                }}
+                                render={({ field: { onChange, onBlur, value } }) => (
+                                    <SelectDotGrade onChange={onChange} onBlur={onBlur} value={value} />
+                                )}
+                                name="base.grade"
+                            />
+                            {errors.base?.grade && (
+                                <Text style={{ color: "red", fontSize: 12 }}>{errors.base.grade.message}</Text>
                             )}
                         </XStack>
                     </YStack>

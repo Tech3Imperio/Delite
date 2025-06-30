@@ -84,8 +84,8 @@ export const BaseNameProtocol = z.object({
     SEMIPRO: z.object({ anchorID: z.literal("HH"), anchorType: z.literal("H10"), ID: z.literal("C50") }),
     SEMISMART: z.object({ anchorID: z.literal("HH"), anchorType: z.literal("H10"), ID: z.literal("D75") }),
     SEMIMINI: z.object({ anchorID: z.literal("HK"), anchorType: z.literal("H8"), ID: z.literal("D55") }),
-    LUX: z.object({ anchorID: z.literal("HH"), anchorType: z.literal("C10"), ID: z.literal("T100") }),
-    SPIGOT: z.object({ anchorID: z.literal("HH"), anchorType: z.literal("C10"), ID: z.literal("E80") }),
+    LUX: z.object({ anchorID: z.literal("CH"), anchorType: z.literal("C10"), ID: z.literal("T100") }),
+    SPIGOT: z.object({ anchorID: z.literal("CH"), anchorType: z.literal("C10"), ID: z.literal("E80") }),
     DOT: z.object({ anchorID: z.literal("M12"), anchorType: z.literal("M12"), ID: z.literal("E50") }),
     MICRO: z.object({ anchorID: z.literal("NA"), anchorType: z.literal("NA"), ID: z.literal("F40") }),
 });

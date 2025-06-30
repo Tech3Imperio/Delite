@@ -18,10 +18,8 @@ export function getFinishCode(name: FinishName): FinishCode | undefined {
 }
 
 export function getDotFinishCode(name: DotFinishName): DotFinishCode | undefined {
-    const color = toPascalCase(name)
-    const key = (Object.keys(DotFinishName) as Array<keyof typeof DotFinishName>).find(
-        (k) => DotFinishName[k] === color
-    )
-
-    return key ? DotFinishCode[key] : undefined
+    const color = toPascalCase(name).toUpperCase()
+    const code = DotFinishCode[color as keyof typeof DotFinishCode]
+    console.log("In get dot finish code", color, code)
+    return code
 }

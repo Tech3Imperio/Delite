@@ -91,7 +91,7 @@ export const SemiSmartForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetSt
     }
 
     const onSubmit: SubmitHandler<SemiSmart> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Semi Smart", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",

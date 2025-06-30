@@ -94,7 +94,7 @@ export const MiniForm = ({ setOpen }: { setOpen: React.Dispatch<React.SetStateAc
     }
 
     const onSubmit: SubmitHandler<Mini> = async (data) => {
-        console.log("Data from Ace", data)
+        console.log("Data from Mini", data)
         // try {
         //     const response = await fetch(`${getApiBaseUrl()}/auth/signin`, {
         //         method: "POST",
