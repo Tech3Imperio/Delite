@@ -59,6 +59,7 @@ export const BottomTabHeader: React.FC<BottomTabHeaderProps> = ({
           size="$3"
           themeInverse
           onPress={() => {
+            console.log('HI');
             signOut();
             removeToken();
           }}>
