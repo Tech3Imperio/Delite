@@ -17,15 +17,20 @@ module.exports = {
         importsWhitelist: ['constants.js', 'colors.js'],
         logTimings: true,
         disableExtraction: process.env.NODE_ENV === 'development',
-      }
+      },
     ],
-    ['module:react-native-dotenv', {
-      moduleName: '@env',
-      path: '.env',
-      blacklist: null,
-      whitelist: null,
-      safe: true,
-      allowUndefined: false,
-    }],
+    [
+      'module:react-native-dotenv',
+      {
+        moduleName: '@env',
+        path: '.env',
+        blacklist: null,
+        whitelist: null,
+        safe: true,
+        allowUndefined: false,
+      },
+    ],
+    '@babel/plugin-proposal-export-namespace-from',
+    'react-native-worklets/plugin',
   ],
 };

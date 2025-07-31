@@ -1,27 +1,28 @@
-import { defineConfig } from 'vite';
+import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import {tamaguiPlugin} from '@tamagui/vite-plugin';
 const extensions = [
-  ".web.tsx",
-  ".tsx",
-  ".web.ts",
-  ".ts",
-  ".web.jsx",
-  ".jsx",
-  ".web.js",
-  ".js",
-  ".css",
-  ".json",
+  '.web.tsx',
+  '.tsx',
+  '.web.ts',
+  '.ts',
+  '.web.jsx',
+  '.jsx',
+  '.web.js',
+  '.js',
+  '.css',
+  '.json',
 ];
 
 export default defineConfig({
-  plugins: [react(),
-  tamaguiPlugin({
-    config: 'src/tamagui.config.ts',
-    components: ['tamagui', '@tamagui/lucide-icons'],
-    optimize: true,
-  }),
+  plugins: [
+    react(),
+    tamaguiPlugin({
+      config: 'src/tamagui.config.ts',
+      components: ['tamagui', '@tamagui/lucide-icons'],
+      optimize: true,
+    }),
   ],
   optimizeDeps: {
     esbuildOptions: {
@@ -31,7 +32,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'react-native': 'react-native-web',
-      "@env": path.resolve(__dirname, "src/utils/auth/env.web.ts")
+      '@env': path.resolve(__dirname, 'src/utils/auth/env.web.ts'),
     },
   },
   server: {

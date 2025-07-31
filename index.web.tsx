@@ -1,9 +1,9 @@
 // index.web.tsx
-import { AppRegistry } from 'react-native';
+import {AppRegistry} from 'react-native';
 import App from './src/App';
-import { Platform } from 'react-native';
-import appConfig from "./app.json"
-const name = appConfig.name
+import {Platform} from 'react-native';
+import appConfig from './app.json';
+const name = appConfig.name;
 AppRegistry.registerComponent(name, () => App);
 
 if (Platform.OS === 'web') {
